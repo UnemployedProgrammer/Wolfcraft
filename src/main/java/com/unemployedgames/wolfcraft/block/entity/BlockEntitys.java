@@ -15,6 +15,6 @@ public class BlockEntitys {
     public static final RegistryObject<BlockEntityType<TableEntity>> TABLE = BLOCK_ENTITY_TYPE_DEFERRED_REGISTER.register("table",
             () -> BlockEntityType.Builder.of(TableEntity::new, ModBlocks.TABLE.get()).build(null));
 
-    public static final RegistryObject<BlockEntityType<TableEntity>> DRYING_RACK = BLOCK_ENTITY_TYPE_DEFERRED_REGISTER.register("drying_rack",
+    public static final RegistryObject<BlockEntityType<DryingRackEntity>> DRYING_RACK = BLOCK_ENTITY_TYPE_DEFERRED_REGISTER.register("drying_rack",
             () -> BlockEntityType.Builder.of(DryingRackEntity::new, ModBlocks.DRYING_RACK.get()).build(null));
 }

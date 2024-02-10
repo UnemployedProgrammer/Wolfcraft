@@ -7,10 +7,12 @@ import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
 import com.unemployedgames.wolfcraft.block.entity.entities.table.TableEntity;
 import com.unemployedgames.wolfcraft.item.ModItems;
 import com.unemployedgames.wolfcraft.misc.TickableBlockEntity;
+import com.unemployedgames.wolfcraft.misc.WolfMath;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.commands.PlaySoundCommand;
 import net.minecraft.sounds.SoundEvents;
@@ -52,10 +54,23 @@ public class DryingRackBlock extends Block implements EntityBlock {
         super(pProperties);
     }
 
+    private VoxelShape FROM_BB = Block.box(0.0D, 14.0D, 0.0D, 16.0D, 16.0D, 3.0D);
+    private VoxelShape NORTH = Block.box(0.0D, 14.0D, 13.0D, 16.0D, 16.0D, 16.0D);
+    private VoxelShape EAST = Block.box(0.0D, 14.0D, 0.0D, 3.0D, 16.0D, 16.0D);
+    private VoxelShape SOUTH = FROM_BB;
+    private VoxelShape WEST = Block.box(13.0D, 14.0D, 0.0D, 16.0D, 16.0D, 16.0D);
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return Block.box(0, 0, 0, 16, 16, 16);
+        VoxelShape shape = FROM_BB;
+        switch (pState.getValue(FACING)) {
+            case NORTH -> shape = NORTH;
+            case EAST -> shape = EAST;
+            case SOUTH -> shape = SOUTH;
+            case WEST -> shape = WEST;
+            default -> shape = FROM_BB;
+        }
+        return shape;
     }
 
     @Override
@@ -72,8 +87,23 @@ public class DryingRackBlock extends Block implements EntityBlock {
 
     @Override
     public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
-
-
+        if(pHand == InteractionHand.MAIN_HAND) {
+            if(pLevel.getBlockEntity(pPos) instanceof DryingRackEntity dryingRackEntity) {
+                if(dryingRackEntity.getItem().isEmpty()) {
+                    if(ItemsThatCanDry.canItemDry(pPlayer.getItemInHand(pHand).getItem())) {
+                        dryingRackEntity.setItem(new ItemStack(pPlayer.getItemInHand(pHand).getItem()));
+                        pPlayer.getItemInHand(pHand).shrink(1);
+                        dryingRackEntity.setRecipe(ItemsThatCanDry.getKeyFromItem(dryingRackEntity.getItem().getItem()));
+                        dryingRackEntity.newDryTicks();
+                    }
+                } else {
+                    pPlayer.getInventory().add(dryingRackEntity.getItem());
+                    dryingRackEntity.setItem(ItemStack.EMPTY);
+                    dryingRackEntity.setRecipe("");
+                    dryingRackEntity.setTicksUntilDry(0);
+                }
+            }
+        }
         return InteractionResult.SUCCESS;
     }
 

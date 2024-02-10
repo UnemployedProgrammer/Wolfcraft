@@ -2,6 +2,7 @@ package com.unemployedgames.wolfcraft.misc;
 
 import com.unemployedgames.wolfcraft.Wolfcraft;
 import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
+import com.unemployedgames.wolfcraft.block.entity.entities.drying_rack.DryingRackRenderer;
 import com.unemployedgames.wolfcraft.block.entity.entities.table.TableEntityRenderer;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
@@ -28,6 +29,7 @@ public class ClientEvents {
     public static void registerRenderers(EntityRenderersEvent.RegisterRenderers event) {
         // Entities
         event.registerBlockEntityRenderer(BlockEntitys.TABLE.get(), TableEntityRenderer::new);
+        event.registerBlockEntityRenderer(BlockEntitys.DRYING_RACK.get(), DryingRackRenderer::new);
     }
 
     @SubscribeEvent

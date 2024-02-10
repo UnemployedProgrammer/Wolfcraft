@@ -38,6 +38,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
+import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -52,10 +53,16 @@ public class TableBlock extends Block implements EntityBlock {
         super(pProperties);
     }
 
+    private VoxelShape TOP = Block.box(0.0D, 15.0D, 0.0D, 16.0D, 16.0D, 16.0D);
+    private VoxelShape LF = Block.box(13.0D, 0.0D, 1.0D, 15.0D, 15.0D, 3.0D);
+    private VoxelShape LB = Block.box(1.0D, 0.0D, 1.0D, 3.0D, 15.0D, 3.0D);
+    private VoxelShape RF = Block.box(13.0D, 0.0D, 13.0D, 15.0D, 15.0D, 15.0D);
+    private VoxelShape RB = Block.box(1.0D, 0.0D, 13.0D, 3.0D, 15.0D, 15.0D);
+
 
     @Override
     public VoxelShape getShape(BlockState pState, BlockGetter pLevel, BlockPos pPos, CollisionContext pContext) {
-        return Block.box(0, 0, 0, 16, 16, 16);
+        return Shapes.or(TOP,LF,LB,RB,RF);
     }
 
     @Override
