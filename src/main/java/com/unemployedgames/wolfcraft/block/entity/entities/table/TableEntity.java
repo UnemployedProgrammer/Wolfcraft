@@ -5,6 +5,7 @@ import com.unemployedgames.wolfcraft.block.entity.root.RootOneStackInventoryBloc
 import com.unemployedgames.wolfcraft.debug.DebugInfoEntryCollection;
 import com.unemployedgames.wolfcraft.debug.DebugOverlayInfos;
 import com.unemployedgames.wolfcraft.misc.TickableBlockEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;

@@ -21,7 +21,7 @@ public class ClientEvents {
 
     @SubscribeEvent
     public static void registerKeys(RegisterKeyMappingsEvent event) {
-
+        event.register(Keys.INSTANCE.exampleKey);
     }
 
     @SubscribeEvent

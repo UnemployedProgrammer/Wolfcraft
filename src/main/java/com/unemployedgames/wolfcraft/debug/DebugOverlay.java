@@ -12,14 +12,21 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.commands.data.DataCommands;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraftforge.client.event.RenderGuiEvent;
+import net.minecraftforge.client.event.ToastAddEvent;
 
 import java.util.Map;
 
 public class DebugOverlay {
+    public static int xOffset = 0;
+    public static boolean isOpen = true;
     public static void render(RenderGuiEvent.Pre event, DebugOverlayInfos infos) {
+        if(!isOpen)
+            return;
+
         BlockState hoveringBlock = infos.getHoveringBlock();
         boolean display = true;
         if(hoveringBlock == null || hoveringBlock.isAir())
@@ -32,11 +39,11 @@ public class DebugOverlay {
         if(display) {
             Block hoveringBlockType = hoveringBlock.getBlock();
             ImmutableSet<Map.Entry<Property<?>, Comparable<?>>> hoveringBlockValues = hoveringBlock.getValues().entrySet();
-            event.getGuiGraphics().renderItem(new ItemStack(hoveringBlockType.asItem()), 4, 52);
-            event.getGuiGraphics().drawString(Minecraft.getInstance().font, Component.literal(hoveringBlockType.getName().getString()), 24, 52, -1, false);
+            event.getGuiGraphics().renderItem(new ItemStack(hoveringBlockType.asItem()), xOffset + 4, 52);
+            event.getGuiGraphics().drawString(Minecraft.getInstance().font, Component.literal(hoveringBlockType.getName().getString()), xOffset + 24, 52, -1, false);
             int offset = 0;
             for(Map.Entry<Property<?>, Comparable<?>> entry : hoveringBlockValues) {
-                event.getGuiGraphics().drawString(Minecraft.getInstance().font, Component.literal(getPropertyValueString(entry)), 4, 72 + offset, -1, false);
+                event.getGuiGraphics().drawString(Minecraft.getInstance().font, Component.literal(getPropertyValueString(entry)), xOffset + 4, 72 + offset, -1, false);
                 offset = offset + 10;
             }
 
@@ -48,25 +55,25 @@ public class DebugOverlay {
                         offset = offset + 15;
                         if(!collection.getStrings().isEmpty()) {
                             for (Component string : collection.getStrings()) {
-                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, 4, 72 + offset, -1, false);
+                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, xOffset+4, 72 + offset, -1, false);
                                 offset = offset + 10;
                             }
                         }
                         if(!collection.getNumbers().isEmpty()) {
                             for (Component string : collection.getNumbers()) {
-                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, 4, 72 + offset, -1, false);
+                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, xOffset+4, 72 + offset, -1, false);
                                 offset = offset + 10;
                             }
                         }
                         if(!collection.getBooleans().isEmpty()) {
                             for (Component string : collection.getBooleans()) {
-                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, 4, 72 + offset, -1, false);
+                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, xOffset+4, 72 + offset, -1, false);
                                 offset = offset + 10;
                             }
                         }
                         if(!collection.getCompounds().isEmpty()) {
                             for (Component string : collection.getCompounds()) {
-                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, 4, 72 + offset, -1, false);
+                                event.getGuiGraphics().drawString(Minecraft.getInstance().font, string, xOffset+4, 72 + offset, -1, false);
                                 offset = offset + 10;
                             }
                         }
@@ -76,6 +83,7 @@ public class DebugOverlay {
                 }
             }
         }
+        offRenderCode(infos);
     }
 
     /// SUBFUNCTIONS
@@ -93,11 +101,15 @@ public class DebugOverlay {
         return property.getName() + ": " + s;
     }
     public static void renderBackground(GuiGraphics gg) {
-        gg.fill(2, 2, 250, 100, 0x00000020);
+        //gg.fill(2, 2, 250, 100, 0x00000020);
     }
     public static void renderHeader(GuiGraphics gg) {
-        gg.blit(new ResourceLocation(Wolfcraft.MODID, "textures/gui/googles_debug.png"), 7, 0, 0, 0, 32, 32, 32, 32);
-        gg.drawString(Minecraft.getInstance().font, Component.literal("Wolfcraft: Debug Screen"), 45, 8, -1, false);
-        gg.fill(4, 48, 248, 50, -1);
+        gg.blit(new ResourceLocation(Wolfcraft.MODID, "textures/gui/googles_debug.png"), xOffset + 7, 0, 0, 0, 32, 32, 32, 32);
+        gg.drawString(Minecraft.getInstance().font, Component.literal("Wolfcraft: Debug Screen"), xOffset+45, 8, -1, false);
+        gg.fill(xOffset+4, 48, xOffset+248, 50, -1);
+    }
+
+    public static void offRenderCode(DebugOverlayInfos info) {
+
     }
 }
