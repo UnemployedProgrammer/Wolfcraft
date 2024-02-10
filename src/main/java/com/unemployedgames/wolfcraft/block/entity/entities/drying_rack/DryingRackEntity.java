@@ -10,6 +10,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
+import java.util.Random;
+
 public class DryingRackEntity extends RootOneStackInventoryBlockEntity implements TickableBlockEntity {
     private int ticksUntilDry = 0;
     public DryingRackEntity(BlockPos pPos, BlockState pBlockState) {
@@ -65,6 +67,7 @@ public class DryingRackEntity extends RootOneStackInventoryBlockEntity implement
     @Override
     public DebugInfoEntryCollection getDebugInfoString(DebugInfoEntryCollection debugCollection) {
         DebugInfoEntryCollection col = super.getDebugInfoString(debugCollection);
+        col.addNumber("ticks_until_dry", ticksUntilDry);
         return col;
     }
 }
