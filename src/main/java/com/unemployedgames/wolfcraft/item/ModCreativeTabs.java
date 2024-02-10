@@ -24,7 +24,7 @@ public class ModCreativeTabs {
                     .displayItems((pParameters, pOutput) -> {
 
                         // Add items and Blocks
-                        pOutput.accept(ModItems.CAPPY_HAT.get());
+                        //pOutput.accept(ModItems.CAPPY_HAT.get());
 
                     })
                     .build());

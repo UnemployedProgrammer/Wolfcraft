@@ -19,9 +19,9 @@ public class Config
 {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    //private static final ForgeConfigSpec.BooleanValue LOG_DIRT_BLOCK = BUILDER
-    //        .comment("Whether to log the dirt block on common setup")
-    //        .define("logDirtBlock", true);
+    private static final ForgeConfigSpec.BooleanValue DEBUG_ENABLED = BUILDER
+            .comment("DevMode: Testing Purposes // Please only on Client. (Could Crash)")
+            .define("isDevMode", false);
 
     //private static final ForgeConfigSpec.IntValue MAGIC_NUMBER = BUILDER
     //        .comment("A magic number")
@@ -38,10 +38,7 @@ public class Config
 
     static final ForgeConfigSpec SPEC = BUILDER.build();
 
-    //public static boolean logDirtBlock;
-    //public static int magicNumber;
-    //public static String magicNumberIntroduction;
-    //public static Set<Item> items;
+    public static boolean isDebug;
 
     private static boolean validateItemName(final Object obj)
     {
@@ -51,13 +48,6 @@ public class Config
     @SubscribeEvent
     static void onLoad(final ModConfigEvent event)
     {
-        //logDirtBlock = LOG_DIRT_BLOCK.get();
-        //magicNumber = MAGIC_NUMBER.get();
-        //magicNumberIntroduction = MAGIC_NUMBER_INTRODUCTION.get();
-
-        // convert the list of strings into a set of items
-        //items = ITEM_STRINGS.get().stream()
-        //        .map(itemName -> ForgeRegistries.ITEMS.getValue(new ResourceLocation(itemName)))
-        //        .collect(Collectors.toSet());
+        isDebug = DEBUG_ENABLED.get();
     }
 }

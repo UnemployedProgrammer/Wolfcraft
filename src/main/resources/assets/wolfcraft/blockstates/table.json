@@ -1,0 +1,31 @@
+{
+  "variants": {
+    "plate=true,facing=north": {
+      "model": "wolfcraft:block/table_plate"
+    },
+    "plate=false,facing=north": {
+      "model": "wolfcraft:block/table_plain"
+    },
+
+    "plate=false,facing=east": {
+      "model": "wolfcraft:block/table_plain"
+    },
+    "plate=true,facing=east": {
+      "model": "wolfcraft:block/table_plate"
+    },
+
+    "plate=false,facing=south": {
+      "model": "wolfcraft:block/table_plain"
+    },
+    "plate=true,facing=south": {
+      "model": "wolfcraft:block/table_plate"
+    },
+
+    "plate=true,facing=west": {
+      "model": "wolfcraft:block/table_plate"
+    },
+    "plate=false,facing=west": {
+      "model": "wolfcraft:block/table_plain"
+    }
+  }
+}

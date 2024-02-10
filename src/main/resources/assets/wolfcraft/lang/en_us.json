@@ -1,4 +1,6 @@
 {
   "creativetab.wolfcraft.main": "Wolfcraft",
-  "item.wolfcraft.cappy": "Cappy"
+  "item.wolfcraft.cappy": "Cappy",
+
+  "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/"
 }

@@ -2,6 +2,7 @@ package com.unemployedgames.wolfcraft.item;
 
 import com.unemployedgames.wolfcraft.Wolfcraft;
 import com.unemployedgames.wolfcraft.item.armor.CappyHat;
+import com.unemployedgames.wolfcraft.item.custom.GetAllItems;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
@@ -18,8 +19,14 @@ public class ModItems {
 
     //public static final RegistryObject<Item> WET_WOLF_LEATHER = ITEMS.register("wet_wolf_leather",
     //        () -> new Item(new Item.Properties()));
-    public static final RegistryObject<CappyHat> CAPPY_HAT = ITEMS.register("cappy",
-            () -> new CappyHat(ArmorMaterials.LEATHER, ArmorItem.Type.HELMET, new Item.Properties()));
+    //public static final RegistryObject<CappyHat> CAPPY_HAT = ITEMS.register("cappy",
+    //        () -> new CappyHat(ArmorMaterials.LEATHER, ArmorItem.Type.HELMET, new Item.Properties()));
+    public static final RegistryObject<Item> PLATE = ITEMS.register("plate",
+            () -> new Item(new Item.Properties()));
+
+    public static final RegistryObject<Item> GETALL = ITEMS.register("all",
+            () -> new GetAllItems(new Item.Properties()));
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

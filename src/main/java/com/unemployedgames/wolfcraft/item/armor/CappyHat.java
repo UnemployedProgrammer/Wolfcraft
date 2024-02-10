@@ -86,10 +86,10 @@ public class CappyHat extends ArmorItem implements GeoItem {
             }
 
             // Check each of the pieces match our set
-            boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(ModItems.CAPPY_HAT.get()));
+            //boolean isFullSet = wornArmor.containsAll(ObjectArrayList.of(ModItems.CAPPY_HAT.get()));
 
             // Play the animation if the full set is being worn, otherwise stop
-            return isFullSet ? PlayState.CONTINUE : PlayState.STOP; // replace "true" with "isFullSet" when complete !!!!!!!!!!!!!!!!!!
+            return true ? PlayState.CONTINUE : PlayState.STOP; // replace "true" with "isFullSet" when complete !!!!!!!!!!!!!!!!!!
         }));
     }
 
