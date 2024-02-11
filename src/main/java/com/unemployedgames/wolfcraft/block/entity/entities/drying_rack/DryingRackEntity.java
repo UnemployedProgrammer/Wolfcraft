@@ -51,9 +51,18 @@ public class DryingRackEntity extends RootOneStackInventoryBlockEntity implement
         if(this.level == null || this.level.isClientSide())
             return;
 
+        tickSub();
         setChanged();
 
+        this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
+    }
 
+    public void newDryTicks() {
+        Random random = new Random();
+        ticksUntilDry = random.nextInt(601) + 2000;
+    }
+
+    public void tickSub() {
         if(ticksUntilDry >= 1 && recipe != "") {
             ticksUntilDry = ticksUntilDry - 1;
             setChanged();
@@ -65,12 +74,6 @@ public class DryingRackEntity extends RootOneStackInventoryBlockEntity implement
                 setChanged();
             }
         }
-        this.level.sendBlockUpdated(this.worldPosition, getBlockState(), getBlockState(), Block.UPDATE_ALL);
-    }
-
-    public void newDryTicks() {
-        Random random = new Random();
-        ticksUntilDry = random.nextInt(601) + 2000;
     }
 
     public String getRecipe() {

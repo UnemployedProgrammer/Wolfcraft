@@ -130,6 +130,18 @@ public class DryingRackBlock extends Block implements EntityBlock {
     }
 
     @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (!pLevel.getBlockState(pPos).isAir() || pLevel.isClientSide())
+            return;
+        if(pLevel.getBlockEntity(pPos) instanceof DryingRackEntity dryingRack) {
+            if(!dryingRack.getItem().isEmpty()) {
+                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dryingRack.getItem()));
+            }
+        }
+        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+    }
+
+    @Override
     public BlockState mirror(BlockState pState, Mirror pMirror) {
         return pState.rotate(pMirror.getRotation(pState.getValue(FACING)));
     }

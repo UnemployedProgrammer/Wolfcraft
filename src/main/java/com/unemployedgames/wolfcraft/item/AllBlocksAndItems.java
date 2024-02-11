@@ -15,5 +15,6 @@ public class AllBlocksAndItems {
 
         all.add(ModItems.PLATE.get());
         all.add(ModBlocks.TABLE.get().asItem());
+        all.add(ModBlocks.DRYING_RACK.get().asItem());
     }
 }

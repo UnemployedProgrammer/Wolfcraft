@@ -24,8 +24,9 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 
 @Mod.EventBusSubscriber(modid = Wolfcraft.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
-    @SubscribeEvent
-    public static void onBlockBroken(BlockEvent.BreakEvent e) {
+
+
+    public static void onBlockBroken_DEACTIVATED(BlockEvent.BreakEvent e) {
         boolean isTable = e.getState().is(ModBlocks.TABLE.get()) && !e.getLevel().isClientSide();
         System.out.println("Block Kaputt :(");
 

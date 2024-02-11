@@ -94,6 +94,8 @@ public class TableBlock extends Block implements EntityBlock {
                 } else {
                     updateBooleanBlockStateProperty(pState, pPos, pLevel, HASPLATE, false);
                     pPlayer.getInventory().add(new ItemStack(ModItems.PLATE.get()));
+                    pPlayer.getInventory().add(table.getItem());
+                    table.setItem(ItemStack.EMPTY);
                 }
             }
         } else {
@@ -132,21 +134,40 @@ public class TableBlock extends Block implements EntityBlock {
         return false;
     }
 
-    //@Override
-    //    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
-    //        if (!pLevel.getBlockState(pPos).isAir())
-    //            return;
-    //        if(pState.getValue(HASPLATE).booleanValue()) {
-    //            pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), new ItemStack(ModItems.PLATE.get())));
-    //            if(pLevel.getBlockEntity(pPos) instanceof TableEntity table) {
-    //                if(!table.getItem().isEmpty()) {
-    //                    pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), table.getItem()));
-    //                    table.setItem(ItemStack.EMPTY);
-    //                }
-    //            }
-    //        }
-    //        super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
-    //    }
+    @Override
+    public void onRemove(BlockState pState, Level pLevel, BlockPos pPos, BlockState pNewState, boolean pIsMoving) {
+        if (pState.is(pNewState.getBlock()) || pLevel.isClientSide()) {
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+            System.out.println("Same");
+            return;
+        }
+
+        System.out.println("Diffrent");
+
+        if(pState.hasProperty(HASPLATE)) {
+            System.out.println("Has A Plate Value");
+            if (pState.getValue(HASPLATE).booleanValue()) {
+                System.out.println("HHas A Plate");
+                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), new ItemStack(ModItems.PLATE.get())));
+            }
+        }
+
+        if(pLevel.getBlockEntity(pPos) instanceof TableEntity table) {
+            if(!table.getItem().isEmpty()) {
+                System.out.println("Has a Item");
+                pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), table.getItem()));
+                table.setItem(ItemStack.EMPTY);
+            }
+        }
+        try {
+            super.onRemove(pState, pLevel, pPos, pNewState, pIsMoving);
+        } catch (Exception e) {
+            //for (Player player : pLevel.players()) {
+            //    player.sendSystemMessage(Component.literal("fail remove be"));
+            //}
+            System.out.println("err remove be table");
+        }
+    }
 
 
 

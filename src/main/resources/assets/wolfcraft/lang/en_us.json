@@ -1,6 +1,9 @@
 {
   "creativetab.wolfcraft.main": "Wolfcraft",
   "item.wolfcraft.cappy": "Cappy",
+  "block.wolfcraft.table": "Table",
+  "item.wolfcraft.plate": "Plate",
+  "block.wolfcraft.drying_rack": "Drying Rack",
 
   "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/"
 }
