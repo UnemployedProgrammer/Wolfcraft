@@ -10,9 +10,14 @@
   "item.wolfcraft.wet_wolf_leather": "Wet Wolf Leather",
   "item.wolfcraft.glasses": "Information Glasses",
   "block.wolfcraft.drying_rack": "Drying Rack",
+  "gui.wolfcraft.needling_station.no_recipe_1": "No Recipes for",
+  "gui.wolfcraft.needling_station.no_recipe_2": "this Item.",
+  "gui.wolfcraft.needling_station.failed_mouse_wheel_sound": "Failed to play 'MouseWheelSound' because: minecraft.level = null",
 
   "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/",
 
   "glasses.wolfcraft.information" : "Information: ",
-  "glasses.wolfcraft.property.string.dry_in": "Dry In"
+  "glasses.wolfcraft.property.string.dry_in": "Dry In",
+
+  "sounds.wolfcraft.mose_wheel_scrolls": "Scrolling Mouse Wheel"
 }

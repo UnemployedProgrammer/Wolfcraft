@@ -1,8 +1,10 @@
 package com.unemployedgames.wolfcraft.misc;
 
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import org.apache.commons.lang3.StringUtils;
 
 public class WolfMath {
     public static final int TICKS_PER_SECOND = 20;
@@ -40,6 +42,10 @@ public class WolfMath {
             // Standard check for positive or mixed ranges
             return number >= min && number <= max;
         }
+    }
+
+    public static Component cutComponent(Component componentToCut, int maxLength) {
+        return Component.literal(StringUtils.abbreviate(componentToCut.getString(), "...", maxLength));
     }
 
 }

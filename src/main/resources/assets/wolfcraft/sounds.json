@@ -1,0 +1,8 @@
+{
+  "mouse_wheel_scroll": {
+    "subtitles": "sounds.wolfcraft.mose_wheel_scrolls",
+    "sounds": [
+      "wolfcraft:scroll_wheel"
+    ]
+  }
+}

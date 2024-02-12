@@ -9,6 +9,7 @@ import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
 import com.unemployedgames.wolfcraft.item.AllBlocksAndItems;
 import com.unemployedgames.wolfcraft.item.ModCreativeTabs;
 import com.unemployedgames.wolfcraft.item.ModItems;
+import com.unemployedgames.wolfcraft.misc.ModSounds;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
@@ -50,6 +51,7 @@ public class Wolfcraft
         BlockEntitys.BLOCK_ENTITY_TYPE_DEFERRED_REGISTER.register(modEventBus);
         ModMenuTypes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
+        ModSounds.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);

@@ -23,6 +23,7 @@ import java.util.Map;
 public class NeedlingStationMenu extends AbstractContainerMenu {
 
     private final Level level;
+    private final Player player;
     private final ContainerData data;
 
     private IItemHandler internal;
@@ -39,6 +40,7 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
         super(ModMenuTypes.NEEDLING_STATION_MENU.get(), pContainerId);
         checkContainerSize(inv, 2);
         this.level = inv.player.level();
+        this.player = inv.player;
         this.data = data;
         this.access = access;
 
@@ -60,6 +62,14 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
         int progressArrowSize = 26; // This is the height in pixels of your arrow
 
         return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
+    }
+
+    public Player getPlayer() {
+        return player;
+    }
+
+    public Level getLevel() {
+        return level;
     }
 
     // CREDIT GOES TO: diesieben07 | https://github.com/diesieben07/SevenCommons
