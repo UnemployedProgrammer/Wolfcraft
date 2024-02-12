@@ -2,7 +2,7 @@
 	"credit": "Made with Blockbench",
 	"textures": {
 		"planks": "minecraft:block/oak_planks",
-		"particle": "minecraft:block/white_concrete",
+		"particle": "minecraft:block/oak_planks",
 		"concrete": "minecraft:block/white_concrete"
 	},
 	"elements": [

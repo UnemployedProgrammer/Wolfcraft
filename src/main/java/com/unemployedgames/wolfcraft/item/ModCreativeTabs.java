@@ -3,7 +3,9 @@ package com.unemployedgames.wolfcraft.item;
 import com.unemployedgames.wolfcraft.Wolfcraft;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -23,9 +25,15 @@ public class ModCreativeTabs {
                     .title(Component.translatable("creativetab.wolfcraft.main"))
                     .displayItems((pParameters, pOutput) -> {
 
-                        // Add items and Blocks
-                        //pOutput.accept(ModItems.CAPPY_HAT.get());
-
+                        try {
+                            AllBlocksAndItems.all.clear();
+                        } catch (Exception e) {
+                            System.out.println("already Empty!");
+                        }
+                        AllBlocksAndItems.add();
+                        for (Item item : AllBlocksAndItems.all) {
+                             pOutput.accept(item);
+                        }
                     })
                     .build());
 

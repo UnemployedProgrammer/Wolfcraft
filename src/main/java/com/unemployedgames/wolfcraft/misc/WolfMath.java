@@ -5,16 +5,41 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 public class WolfMath {
-    public static VoxelShape rotateShape(Direction from, Direction to, VoxelShape shape) {
-        VoxelShape[] buffer = new VoxelShape[]{shape, Shapes.empty()};
+    public static final int TICKS_PER_SECOND = 20;
+    public static final int SECONDS_PER_MINUTE = 60;
 
-        int times = (to.ordinal() - from.get2DDataValue() + 4) % 4;
-        for (int i = 0; i < times; i++) {
-            buffer[0].forAllBoxes((minX, minY, minZ, maxX, maxY, maxZ) -> buffer[1] = Shapes.or(buffer[1], Shapes.create(1 - maxZ, minY, minX, 1 - minZ, maxY, maxX)));
-            buffer[0] = buffer[1];
-            buffer[1] = Shapes.empty();
+    public static String ticksToFormattedSecondsAndMinutes(int ticks) {
+        if (ticks < 0) {
+            throw new IllegalArgumentException("Ticks cannot be negative.");
         }
 
-        return buffer[0];
+        // Calculate minutes, ensuring non-negative result
+        int minutes = Math.max(0, ticks / (TICKS_PER_SECOND * SECONDS_PER_MINUTE));
+        int remainingTicks = ticks % (TICKS_PER_SECOND * SECONDS_PER_MINUTE);
+
+        // Calculate seconds within 60-second limit
+        int seconds = Math.min(59, remainingTicks / TICKS_PER_SECOND);
+
+        return String.format("%02d:%02d", minutes, seconds);
     }
+
+    public static boolean isBetween(int number, int min, int max) {
+        // Ensure min is less than or equal to max
+        if (min > max) {
+            int temp = min;
+            min = max;
+            max = temp;
+        }
+
+        // Handle negative numbers correctly
+        if (number < 0 && min < 0 && max >= 0) {
+            return number >= min && number <= -1; // Number must be less than or equal to -1
+        } else if (number >= 0 && min < 0 && max < 0) {
+            return number >= 0 && number <= max; // Number must be between 0 and max
+        } else {
+            // Standard check for positive or mixed ranges
+            return number >= min && number <= max;
+        }
+    }
+
 }

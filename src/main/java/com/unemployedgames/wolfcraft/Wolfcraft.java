@@ -2,10 +2,14 @@ package com.unemployedgames.wolfcraft;
 
 import com.mojang.logging.LogUtils;
 import com.unemployedgames.wolfcraft.block.ModBlocks;
+import com.unemployedgames.wolfcraft.block.ModMenuTypes;
+import com.unemployedgames.wolfcraft.block.custom.NeedlingStationMenu;
+import com.unemployedgames.wolfcraft.block.custom.NeedlingStationScreen;
 import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
 import com.unemployedgames.wolfcraft.item.AllBlocksAndItems;
 import com.unemployedgames.wolfcraft.item.ModCreativeTabs;
 import com.unemployedgames.wolfcraft.item.ModItems;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -44,6 +48,7 @@ public class Wolfcraft
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         BlockEntitys.BLOCK_ENTITY_TYPE_DEFERRED_REGISTER.register(modEventBus);
+        ModMenuTypes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
@@ -81,7 +86,7 @@ public class Wolfcraft
         @SubscribeEvent
         public static void onClientSetup(FMLClientSetupEvent event)
         {
-
+            MenuScreens.register(ModMenuTypes.NEEDLING_STATION_MENU.get(), NeedlingStationScreen::new);
         }
     }
 }

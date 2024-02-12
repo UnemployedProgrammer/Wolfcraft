@@ -97,7 +97,7 @@ public class DryingRackBlock extends Block implements EntityBlock {
                         dryingRackEntity.newDryTicks();
                     }
                 } else {
-                    pPlayer.getInventory().add(dryingRackEntity.getItem());
+                    pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), dryingRackEntity.getItem()));
                     dryingRackEntity.setItem(ItemStack.EMPTY);
                     dryingRackEntity.setRecipe("");
                     dryingRackEntity.setTicksUntilDry(0);

@@ -93,8 +93,8 @@ public class TableBlock extends Block implements EntityBlock {
                     }
                 } else {
                     updateBooleanBlockStateProperty(pState, pPos, pLevel, HASPLATE, false);
-                    pPlayer.getInventory().add(new ItemStack(ModItems.PLATE.get()));
-                    pPlayer.getInventory().add(table.getItem());
+                    pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), new ItemStack(ModItems.PLATE.get())));
+                    pLevel.addFreshEntity(new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), table.getItem()));
                     table.setItem(ItemStack.EMPTY);
                 }
             }

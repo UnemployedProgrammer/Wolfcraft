@@ -1,18 +1,20 @@
 package com.unemployedgames.wolfcraft.debug;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.client.gui.screens.inventory.StonecutterScreen;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.inventory.StonecutterMenu;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class DebugInfoEntryCollection {
-    private HashMap<String, Integer> numberNBTList = new HashMap<String, Integer>();
-    private HashMap<String, String> stringNBTList = new HashMap<String, String>();
-    private HashMap<String, Boolean> booleanNBTList = new HashMap<String, Boolean>();
-    private HashMap<String, CompoundTag> compoundNBTList = new HashMap<String, CompoundTag>();
+    protected HashMap<String, Integer> numberNBTList = new HashMap<String, Integer>();
+    protected HashMap<String, String> stringNBTList = new HashMap<String, String>();
+    protected HashMap<String, Boolean> booleanNBTList = new HashMap<String, Boolean>();
+    protected HashMap<String, CompoundTag> compoundNBTList = new HashMap<String, CompoundTag>();
 
     public void addNumber(String key, int value) {
         numberNBTList.put(key, value);
@@ -57,7 +59,6 @@ public class DebugInfoEntryCollection {
             ChatFormatting colorBool = booleanNBTList.get(key) ? ChatFormatting.GREEN : ChatFormatting.RED;
             com.add(Component.literal(key + ": " + colorBool + booleanNBTList.get(key)));
         }
-
         return com;
     }
 

@@ -13,10 +13,9 @@ import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
-@Mod.EventBusSubscriber({Dist.CLIENT})
+
 public class WolfcraftDebugOverlay {
     private static final DebugOverlayInfos infos = new DebugOverlayInfos();
-    @SubscribeEvent(priority = EventPriority.NORMAL)
     public static void eventHandler(RenderGuiEvent.Pre event) {
         if (Config.isDebug && (!(Minecraft.getInstance().gameMode.getPlayerMode() == GameType.SPECTATOR) || !Minecraft.getInstance().options.hideGui)) {
             int w = event.getWindow().getGuiScaledWidth();

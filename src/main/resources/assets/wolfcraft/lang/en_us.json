@@ -3,7 +3,16 @@
   "item.wolfcraft.cappy": "Cappy",
   "block.wolfcraft.table": "Table",
   "item.wolfcraft.plate": "Plate",
+  "item.wolfcraft.all": "All Items and Blocks",
+  "item.wolfcraft.all.inv": "Adding all Items...",
+  "item.wolfcraft.all.inv.tooltip" : "This could take a while...",
+  "item.wolfcraft.dry_wolf_leather": "Dry Wolf Leather",
+  "item.wolfcraft.wet_wolf_leather": "Wet Wolf Leather",
+  "item.wolfcraft.glasses": "Information Glasses",
   "block.wolfcraft.drying_rack": "Drying Rack",
 
-  "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/"
+  "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/",
+
+  "glasses.wolfcraft.information" : "Information: ",
+  "glasses.wolfcraft.property.string.dry_in": "Dry In"
 }

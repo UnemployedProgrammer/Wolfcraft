@@ -24,6 +24,8 @@ public class TableEntityRenderer implements BlockEntityRenderer<TableEntity> {
 
     @Override
     public void render(TableEntity pBlockEntity, float pPartialTick, PoseStack pPoseStack, MultiBufferSource pBuffer, int pPackedLight, int pPackedOverlay) {
+        if(pBlockEntity.getLvl().getBlockState(pBlockEntity.getBlockPos()).isAir())
+            return;
         ItemStack stack = pBlockEntity.getItem();
         if(stack.isEmpty() || !pBlockEntity.getLvl().getBlockState(pBlockEntity.getPos()).getValue(BooleanProperty.create("plate")).booleanValue())
             return;

@@ -105,7 +105,7 @@ public class DebugOverlay {
     }
     public static void renderHeader(GuiGraphics gg) {
         gg.blit(new ResourceLocation(Wolfcraft.MODID, "textures/gui/googles_debug.png"), xOffset + 7, 0, 0, 0, 32, 32, 32, 32);
-        gg.drawString(Minecraft.getInstance().font, Component.literal("Wolfcraft: Debug Screen - F10 to TOGGLE [Available wehn: DEBUG=TRUE]"), xOffset+45, 8, -1, false);
+        gg.drawString(Minecraft.getInstance().font, Component.literal("Wolfcraft: Debug Screen - F10 to TOGGLE [Available when: DEBUG=TRUE]"), xOffset+45, 8, -1, false);
         gg.fill(xOffset+4, 48, xOffset+248, 50, -1);
     }
 

@@ -1,5 +1,6 @@
 package com.unemployedgames.wolfcraft.block.entity.entities.drying_rack;
 
+import com.unemployedgames.wolfcraft.item.ModItems;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 
@@ -62,5 +63,7 @@ public class ItemsThatCanDry {
     /////// ITEMS //////
 
     public static String SPONGE = addItem(Items.WET_SPONGE, Items.SPONGE, "sponge");
-    public static String LEAHTER = addItem(Items.LEATHER, Items.LEAD, "leatherlead");
+    public static String WOLF_LEATHER = addItem(ModItems.WOLF_LEATHER_WET.get(), ModItems.WOLF_LEATHER_DRY.get(), "wolf_leather");
+
+    //public static String LEAHTER = addItem(Items.LEATHER, Items.LEAD, "leatherlead");
 }

@@ -3,17 +3,25 @@ package com.unemployedgames.wolfcraft.block.entity.entities.drying_rack;
 import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
 import com.unemployedgames.wolfcraft.block.entity.root.RootOneStackInventoryBlockEntity;
 import com.unemployedgames.wolfcraft.debug.DebugInfoEntryCollection;
+import com.unemployedgames.wolfcraft.item.custom.informationglasses.GlassesInformationCollection;
+import com.unemployedgames.wolfcraft.item.custom.informationglasses.IHaveGlassesInformation;
 import com.unemployedgames.wolfcraft.misc.TickableBlockEntity;
+import com.unemployedgames.wolfcraft.misc.WolfMath;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.Connection;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
-public class DryingRackEntity extends RootOneStackInventoryBlockEntity implements TickableBlockEntity {
+public class DryingRackEntity extends RootOneStackInventoryBlockEntity implements TickableBlockEntity, IHaveGlassesInformation {
     private int ticksUntilDry = 0;
     private String recipe = "";
     public DryingRackEntity(BlockPos pPos, BlockState pBlockState) {
@@ -39,11 +47,6 @@ public class DryingRackEntity extends RootOneStackInventoryBlockEntity implement
         super.load(pTag);
         ticksUntilDry = pTag.getInt("ticks_until_dry");
         recipe = pTag.getString("recipe");
-    }
-
-    @Override
-    public void handleUpdateTag(CompoundTag tag) {
-        load(tag);
     }
 
     @Override
@@ -103,5 +106,19 @@ public class DryingRackEntity extends RootOneStackInventoryBlockEntity implement
         col.addNumber("ticks_until_dry", ticksUntilDry);
         col.addString("recipe", recipe);
         return col;
+    }
+
+    @Nullable
+    @Override
+    public Packet<ClientGamePacketListener> getUpdatePacket() {
+        return ClientboundBlockEntityDataPacket.create(this);
+    }
+
+    @Override
+    public GlassesInformationCollection getGlassesInformations(GlassesInformationCollection glassesInformationCollection) {
+
+        glassesInformationCollection.addString("dry_in", WolfMath.ticksToFormattedSecondsAndMinutes(ticksUntilDry));
+
+        return glassesInformationCollection;
     }
 }

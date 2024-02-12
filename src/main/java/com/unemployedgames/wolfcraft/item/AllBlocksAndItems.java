@@ -13,8 +13,10 @@ public class AllBlocksAndItems {
         //all.add(ModItems.EXAMPLEITEM);
         //all.add(ModBlocks.EXAMPLEBLOCK.get().asItem());
 
-        all.add(ModItems.PLATE.get());
         all.add(ModBlocks.TABLE.get().asItem());
+        all.add(ModItems.PLATE.get());
         all.add(ModBlocks.DRYING_RACK.get().asItem());
+        all.add(ModItems.WOLF_LEATHER_WET.get());
+        all.add(ModItems.WOLF_LEATHER_DRY.get());
     }
 }

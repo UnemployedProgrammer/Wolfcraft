@@ -1,6 +1,7 @@
 package com.unemployedgames.wolfcraft.block;
 
 import com.unemployedgames.wolfcraft.Wolfcraft;
+import com.unemployedgames.wolfcraft.block.custom.NeedlingStationBlock;
 import com.unemployedgames.wolfcraft.block.entity.entities.drying_rack.DryingRackBlock;
 import com.unemployedgames.wolfcraft.block.entity.entities.table.TableBlock;
 import com.unemployedgames.wolfcraft.item.ModItems;
@@ -46,6 +47,16 @@ public class ModBlocks {
 
     public static final RegistryObject<Block> DRYING_RACK = registerBlock("drying_rack",
             () -> new DryingRackBlock(BlockBehaviour.Properties.of()
+                    .instrument(NoteBlockInstrument.BASS)
+                    .strength(0.5f, 1f)
+                    .pushReaction(PushReaction.PUSH_ONLY)
+                    .sound(SoundType.WOOD)
+                    .mapColor(DyeColor.LIGHT_GRAY)
+                    .noOcclusion()
+            ));
+
+    public static final RegistryObject<Block> NEEDLING_STATION = registerBlock("needling_station",
+            () -> new NeedlingStationBlock(BlockBehaviour.Properties.of()
                     .instrument(NoteBlockInstrument.BASS)
                     .strength(0.5f, 1f)
                     .pushReaction(PushReaction.PUSH_ONLY)
