@@ -23,6 +23,7 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
@@ -38,9 +39,14 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
     private static final ResourceLocation SLOT =
             new ResourceLocation(Wolfcraft.MODID, "textures/gui/needling_station/slot.png");
 
+    private static final String STRING_LINE = "textures/gui/needling_station/line.png";
+    private WolfMath.NeedlingPoints needlingPoints = new WolfMath.NeedlingPoints.Builder().firstRecipeLine(" ", " ", " ").midRecipeLine(" ", " ", " ").lastRecipeLine(" ", " ", " ").build();
+
     private Component chosenRecipeName = Component.literal("-> Air");
     private Component chosenRecipeNameAbove = Component.literal("> Air");
     private Component chosenRecipeNameBelow = Component.literal("> Air");
+
+    private List<RawNeedlingRecipe> recipes;
 
     private int recipeInd = 0;
 
@@ -49,7 +55,8 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
 
     private List<Component> chosenRecipeList = new ArrayList<>();
     private List<Item> recipeListForItem = new ArrayList<>();
-    private ItemStack recipeItem = new ItemStack(Items.LEATHER);
+    private ItemStack recipeItem = new ItemStack(Items.BARRIER);
+    private RawNeedlingRecipe recipeCurrent = null;
 
     private NeedlingStationMenu menu;
 
@@ -72,6 +79,29 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         recipeListForItem.add(Items.WOODEN_AXE);
 
         updateIndex();
+    }
+
+    private void setRecipePoints() {
+
+    }
+
+    private void writeRecipesForItemList(Item slotInputItem) {
+        if(recipes.isEmpty()) return;
+        for (RawNeedlingRecipe recipe : recipes) {
+            if(recipe.isInput(slotInputItem)) {
+                recipeListForItem.add(recipe.getOutput());
+            }
+        }
+    }
+
+    private void setRecipeForSelectedItem() {
+        if(recipes.isEmpty()) return;
+        for (RawNeedlingRecipe recipe : recipes) {
+            if(recipe.isOutput(recipeItem.getItem())) {
+                recipeCurrent = recipe;
+                needlingPoints = new WolfMath.NeedlingPoints.Builder().firstRecipeLine(recipe.getRecipeLine1()).midRecipeLine(recipe.getRecipeLine2()).lastRecipeLine(recipe.getRecipeLine3()).build();
+            }
+        }
     }
 
     @Override
@@ -111,6 +141,7 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         renderNeedle(mouseX, mouseY, guiGraphics);
         renderOptions(guiGraphics, mouseX, mouseY, delta);
         renderRecipeTooltip(mouseX, mouseY, guiGraphics);
+        renderNeedlingLines(mouseX, mouseY, guiGraphics);
     }
 
     private void renderOptions(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
@@ -151,6 +182,20 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         }
     }
 
+    public void renderNeedlingLines(int mX, int mY, GuiGraphics gg) {
+        int needlingFieldXMin = 20;
+        int needlingFieldXMax = 220;
+        int needlingFieldYMin = height / 2 - 100;
+        int needlingFieldYMax = height / 2 + 100;
+        if (WolfMath.isBetween(mX, needlingFieldXMin, needlingFieldXMax) && WolfMath.isBetween(mY, needlingFieldYMin, needlingFieldYMax)) {
+            // new UiUtils().drawLine(10, 10, mX, mY, STRING_LINE);
+        }
+    }
+
+    public void renderPoints(GuiGraphics gg) {
+
+    }
+
     public void renderRecipeTooltip(int mX, int mY, GuiGraphics gg) {
         int tooltipFieldXMin = optionsXOffset + 5;
         int tooltipFieldXMax = optionsXOffset + 150;
@@ -161,6 +206,14 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         }
     }
 
+    private boolean shouldScroll(int mX, int mY) {
+        int needlingFieldXMin = 20;
+        int needlingFieldXMax = 220;
+        int needlingFieldYMin = height / 2 - 100;
+        int needlingFieldYMax = height / 2 + 100;
+        return !(WolfMath.isBetween(mX, needlingFieldXMin, needlingFieldXMax) && WolfMath.isBetween(mY, needlingFieldYMin, needlingFieldYMax));
+    }
+
     @Override
     public void mouseMoved(double pMouseX, double pMouseY) {
         super.mouseMoved(pMouseX, pMouseY);
@@ -169,7 +222,7 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
     @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
         System.out.println(pDelta);
-        if(recipeListForItem.size() != 0) {
+        if(recipeListForItem.size() != 0 && shouldScroll(((int)pMouseX), ((int)pMouseY))) {
             recipeInd = (int) (recipeInd + pDelta);
             if(recipeInd <= 0) {
                 recipeInd = 0;
