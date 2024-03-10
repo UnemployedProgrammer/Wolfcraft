@@ -18,5 +18,10 @@ public class AllBlocksAndItems {
         all.add(ModBlocks.DRYING_RACK.get().asItem());
         all.add(ModItems.WOLF_LEATHER_WET.get());
         all.add(ModItems.WOLF_LEATHER_DRY.get());
+
+        all.add(ModItems.WET_WOLF_ARMOR_HELMET.get());
+        all.add(ModItems.WET_WOLF_ARMOR_CHESTPLATE.get());
+        all.add(ModItems.WET_WOLF_ARMOR_LEGGINS.get());
+        all.add(ModItems.WET_WOLF_ARMOR_BOOTS.get());
     }
 }

@@ -31,6 +31,8 @@ public class Wolfcraft
 {
     // Define mod id in a common place for everything to reference
     public static final String MODID = "wolfcraft";
+    public static final String MINECRAFT_VERSION = "1.20.1";
+    public static final String MOD_VERSION = "1.0.0";
     public static final String GeckoLibNeededVersionURLModrinth = "https://modrinth.com/mod/geckolib/version/pyB0jIsx";
 
     public static final boolean GLWarnMSG = false;

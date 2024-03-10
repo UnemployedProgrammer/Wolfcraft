@@ -2,6 +2,7 @@ package com.unemployedgames.wolfcraft.item;
 
 import com.unemployedgames.wolfcraft.Wolfcraft;
 import com.unemployedgames.wolfcraft.item.armor.CappyHat;
+import com.unemployedgames.wolfcraft.item.armor.WetWolfArmor;
 import com.unemployedgames.wolfcraft.item.custom.GetAllItems;
 import com.unemployedgames.wolfcraft.item.custom.informationglasses.InformationGlasses;
 import net.minecraft.world.item.ArmorItem;
@@ -37,6 +38,18 @@ public class ModItems {
 
     public static final RegistryObject<Item> NEEDLE = ITEMS.register("needle",
             () -> new GetAllItems(new Item.Properties()));
+
+    public static final RegistryObject<WetWolfArmor> WET_WOLF_ARMOR_HELMET = ITEMS.register("wet_wolf_armor_helmet",
+            () -> new WetWolfArmor(ArmorMaterials.LEATHER, ArmorItem.Type.HELMET, new Item.Properties()));
+
+    public static final RegistryObject<WetWolfArmor> WET_WOLF_ARMOR_CHESTPLATE = ITEMS.register("wet_wolf_armor_chestplate",
+            () -> new WetWolfArmor(ArmorMaterials.LEATHER, ArmorItem.Type.CHESTPLATE, new Item.Properties()));
+
+    public static final RegistryObject<WetWolfArmor> WET_WOLF_ARMOR_LEGGINS = ITEMS.register("wet_wolf_armor_leggins",
+            () -> new WetWolfArmor(ArmorMaterials.LEATHER, ArmorItem.Type.LEGGINGS, new Item.Properties()));
+
+    public static final RegistryObject<WetWolfArmor> WET_WOLF_ARMOR_BOOTS = ITEMS.register("wet_wolf_armor_boots",
+            () -> new WetWolfArmor(ArmorMaterials.LEATHER, ArmorItem.Type.BOOTS, new Item.Properties()));
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);

@@ -1,0 +1,6 @@
+{
+	"parent": "minecraft:item/generated",
+	"textures": {
+		"layer0": "wolfcraft:item/wolf_armor_chestplate_wet"
+	}
+}
