@@ -17,6 +17,7 @@ public class ModMainScreen extends Screen {
     private TextAndImageButton youtube;
     private TextAndImageButton tiktok;
     private TextAndImageButton modrinth;
+    private TextAndImageButton github;
 
 
     public ModMainScreen() {
@@ -28,7 +29,9 @@ public class ModMainScreen extends Screen {
         super.init();
 
         title = addRenderableWidget(new ImageWidget((width / 2) - (300 / 2), 20, 300, 60, new ResourceLocation(Wolfcraft.MODID, "textures/gui/wolfcraft_title.png")));
-        suggestion = addRenderableWidget(new TextAndImageButton.Builder(Component.translatable("gui.wolfcraft.issues_and_suggestions.title.suggestion"), ))
+        //suggestion = addRenderableWidget(new TextAndImageButton.Builder(Component.translatable("gui.wolfcraft.issues_and_suggestions.title.suggestion"), MainMenuIcons.SUGGESTIONS, (press) -> {this.minecraft.setScreen(new IssuesAndSuggestionsScreen(false));}).textureSize());
+
+        //CHANGE THE WHOLE ****
     }
 
     @Override
