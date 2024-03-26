@@ -5,6 +5,8 @@ import com.unemployedgames.wolfcraft.block.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Container;
+import net.minecraft.world.SimpleContainer;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.*;
@@ -28,6 +30,26 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
 
     private IItemHandler internal;
 
+    final Slot inputSlot;
+    /** The inventory slot that stores the output of the crafting recipe. */
+    final Slot resultSlot;
+    int resultSlotXOffset = 54;
+    Runnable slotUpdateListener = () -> {
+    };
+    public final Container container = new SimpleContainer(1) {
+        /**
+         * For block entities, ensures the chunk containing the block entity is saved to disk later - the game won't think
+         * it hasn't changed and skip it.
+         */
+        public void setChanged() {
+            super.setChanged();
+            NeedlingStationMenu.this.slotsChanged(this);
+            NeedlingStationMenu.this.slotUpdateListener.run();
+        }
+    };
+    /** The inventory that stores the output of the crafting recipe. */
+    final ResultContainer resultContainer = new ResultContainer();
+
     private final ContainerLevelAccess access;
 
     public NeedlingStationMenu(int pContainerId, Inventory inv, FriendlyByteBuf extraData) {
@@ -49,6 +71,17 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
 
         addDataSlots(data);
 
+        int xSlots = 143;
+        int ySlots = 31;
+
+        this.inputSlot = this.addSlot(new Slot(this.container, 0, xSlots + 6, ySlots));
+        this.resultSlot = this.addSlot(new Slot(this.resultContainer, 1, xSlots + 6 +  resultSlotXOffset, ySlots){
+            @Override
+            public boolean mayPlace(ItemStack pStack) {
+                return false;
+            }
+        });
+
         this.internal = new ItemStackHandler(2);
     }
 
@@ -56,13 +89,6 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
         return data.get(0) > 0;
     }
 
-    public int getScaledProgress() {
-        int progress = this.data.get(0);
-        int maxProgress = this.data.get(1);  // Max Progress
-        int progressArrowSize = 26; // This is the height in pixels of your arrow
-
-        return maxProgress != 0 && progress != 0 ? progress * progressArrowSize / maxProgress : 0;
-    }
 
     public Player getPlayer() {
         return player;
@@ -151,34 +177,34 @@ public class NeedlingStationMenu extends AbstractContainerMenu {
         }
     }
 
-    private void addModSlots(Inventory playerInventory) {
-        for (int i = 0; i < 9; ++i) {
-            this.customSlots.put(0, this.addSlot(new SlotItemHandler(internal, 0, 197, -67) {
-                private final int slot = 0;
-            }));
-            this.customSlots.put(1, this.addSlot(new SlotItemHandler(internal, 1, 250, -67) {
-                private final int slot = 1;
-
-                @Override
-                public boolean mayPlace(ItemStack stack) {
-                    return false;
-                }
-            }));
-
-        }
-    }
-
     @Override
     public void removed(Player playerIn) {
         super.removed(playerIn);
         if (playerIn instanceof ServerPlayer serverPlayer) {
             if (!serverPlayer.isAlive() || serverPlayer.hasDisconnected()) {
-                for (int j = 0; j < internal.getSlots(); ++j) {
-                    playerIn.drop(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
+                //for (int j = 0; j < internal.getSlots(); ++j) {
+                //    playerIn.drop(internal.extractItem(j, internal.getStackInSlot(j).getCount(), false), false);
+                //}
+                if(!container.isEmpty() && !container.getItem(0).isEmpty()) {
+                    playerIn.drop(container.getItem(0), false);
+                    container.getItem(0).setCount(0);
                 }
+                if(!resultContainer.isEmpty() && !resultContainer.getItem(1).isEmpty()) {
+                    playerIn.drop(resultContainer.getItem(1), false);
+                    resultContainer.getItem(1).setCount(0);
+                }
+
             } else {
-                for (int i = 0; i < internal.getSlots(); ++i) {
-                    playerIn.getInventory().placeItemBackInInventory(internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
+                //for (int i = 0; i < internal.getSlots(); ++i) {
+                //    playerIn.getInventory().placeItemBackInInventory(internal.extractItem(i, internal.getStackInSlot(i).getCount(), false));
+                //}
+                if(!container.isEmpty() && !container.getItem(0).isEmpty()) {
+                    playerIn.getInventory().placeItemBackInInventory(container.getItem(0), false);
+                    container.getItem(0).setCount(0);
+                }
+                if(!resultContainer.isEmpty() && !resultContainer.getItem(1).isEmpty()) {
+                    playerIn.getInventory().placeItemBackInInventory(resultContainer.getItem(1), false);
+                    resultContainer.getItem(1).setCount(0);
                 }
             }
         }

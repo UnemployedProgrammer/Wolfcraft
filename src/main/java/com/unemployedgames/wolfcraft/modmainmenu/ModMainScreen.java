@@ -28,7 +28,7 @@ public class ModMainScreen extends Screen {
     protected void init() {
         super.init();
 
-        title = addRenderableWidget(new ImageWidget((width / 2) - (300 / 2), 20, 300, 60, new ResourceLocation(Wolfcraft.MODID, "textures/gui/wolfcraft_title.png")));
+        title = addRenderableOnly(new ImageWidget((width / 2) - (300 / 2), 20, 300, 60, new ResourceLocation(Wolfcraft.MODID, "textures/gui/wolfcraft_title.png")));
         //suggestion = addRenderableWidget(new TextAndImageButton.Builder(Component.translatable("gui.wolfcraft.issues_and_suggestions.title.suggestion"), MainMenuIcons.SUGGESTIONS, (press) -> {this.minecraft.setScreen(new IssuesAndSuggestionsScreen(false));}).textureSize());
 
         //CHANGE THE WHOLE ****

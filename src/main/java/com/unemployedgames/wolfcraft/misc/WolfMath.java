@@ -52,15 +52,25 @@ public class WolfMath {
     }
 
     public static class NeedlingPoints {
-        private HashMap<String, Boolean> pointsExisting = new HashMap<String, Boolean>();
-        private HashMap<String, Integer> pointsX = new HashMap<String, Integer>();
-        private HashMap<String, Integer> pointsY = new HashMap<String, Integer>();
+        public HashMap<String, String> pointsExisting = new HashMap<String, String>();
+
+        public HashMap<String, String> realIndex = new HashMap<String, String>();
+        public HashMap<String, Integer> pointsX = new HashMap<String, Integer>();
+        public HashMap<String, Integer> pointsY = new HashMap<String, Integer>();
 
         public boolean isPointThere(int index) {
             if(!pointsExisting.isEmpty()) {
                 return pointsExisting.containsKey("p-" + index);
             }
             return false;
+        }
+
+        public int getFakeIndex(int realIndex) {
+            if(this.realIndex.containsKey(realIndex)) {
+                return Integer.valueOf(this.realIndex.get(realIndex).replace("p-", ""));
+            } else {
+                return 100;
+            }
         }
 
         public int getPointX(int index) {
@@ -80,56 +90,65 @@ public class WolfMath {
         private NeedlingPoints(String line1, String line2, String line3) {
             //line1
             if(line1.charAt(0) != ' ') {
-                pointsExisting.put("p-"+line1.charAt(0), true);
+                pointsExisting.put("p-"+line1.charAt(0), "p-"+line1.charAt(0));
+                realIndex.put("0", "p-"+line1.charAt(0));
                 pointsX.put("p-"+line1.charAt(0), 10);
                 pointsY.put("p-"+line1.charAt(0), 10);
             }
             if(line1.charAt(1) != ' ') {
-                pointsExisting.put("p-"+line1.charAt(1), true);
-                pointsX.put("p-"+line1.charAt(1), 10);
+                pointsExisting.put("p-"+line1.charAt(1), "p-"+line1.charAt(1));
+                realIndex.put("1", "p-"+line1.charAt(1));
+                pointsX.put("p-"+line1.charAt(1), 90);
                 pointsY.put("p-"+line1.charAt(1), 10);
             }
             if(line1.charAt(2) != ' ') {
-                pointsExisting.put("p-"+line1.charAt(2), true);
-                pointsX.put("p-"+line1.charAt(2), 10);
+                pointsExisting.put("p-"+line1.charAt(2), "p-"+line1.charAt(2));
+                realIndex.put("2", "p-"+line1.charAt(2));
+                pointsX.put("p-"+line1.charAt(2), 170);
                 pointsY.put("p-"+line1.charAt(2), 10);
             }
 
             //line2
 
             if(line2.charAt(0) != ' ') {
-                pointsExisting.put("p-"+line2.charAt(0), true);
+                pointsExisting.put("p-"+line2.charAt(0), "p-"+line1.charAt(0));
+                realIndex.put("3", "p-"+line1.charAt(0));
                 pointsX.put("p-"+line2.charAt(0), 10);
-                pointsY.put("p-"+line2.charAt(0), 10);
+                pointsY.put("p-"+line2.charAt(0), 90);
             }
             if(line2.charAt(1) != ' ') {
-                pointsExisting.put("p-"+line2.charAt(1), true);
-                pointsX.put("p-"+line2.charAt(1), 10);
-                pointsY.put("p-"+line2.charAt(1), 10);
+                pointsExisting.put("p-"+line2.charAt(1), "p-"+line1.charAt(1));
+                realIndex.put("4", "p-"+line1.charAt(1));
+                pointsX.put("p-"+line2.charAt(1), 90);
+                pointsY.put("p-"+line2.charAt(1), 90);
             }
             if(line2.charAt(2) != ' ') {
-                pointsExisting.put("p-"+line2.charAt(2), true);
-                pointsX.put("p-"+line2.charAt(2), 10);
-                pointsY.put("p-"+line2.charAt(2), 10);
+                pointsExisting.put("p-"+line2.charAt(2), "p-"+line1.charAt(2));
+                realIndex.put("5", "p-"+line1.charAt(2));
+                pointsX.put("p-"+line2.charAt(2), 170);
+                pointsY.put("p-"+line2.charAt(2), 90);
             }
 
 
             //line3
 
             if(line3.charAt(0) != ' ') {
-                pointsExisting.put("p-"+line3.charAt(0), true);
+                pointsExisting.put("p-"+line3.charAt(0), "p-"+line1.charAt(0));
+                realIndex.put("6", "p-"+line1.charAt(0));
                 pointsX.put("p-"+line3.charAt(0), 10);
-                pointsY.put("p-"+line3.charAt(0), 10);
+                pointsY.put("p-"+line3.charAt(0), 170);
             }
             if(line3.charAt(1) != ' ') {
-                pointsExisting.put("p-"+line3.charAt(1), true);
-                pointsX.put("p-"+line3.charAt(1), 10);
-                pointsY.put("p-"+line3.charAt(1), 10);
+                pointsExisting.put("p-"+line3.charAt(1), "p-"+line1.charAt(1));
+                realIndex.put("7", "p-"+line1.charAt(1));
+                pointsX.put("p-"+line3.charAt(1), 90);
+                pointsY.put("p-"+line3.charAt(1), 170);
             }
             if(line3.charAt(2) != ' ') {
-                pointsExisting.put("p-"+line3.charAt(2), true);
-                pointsX.put("p-"+line3.charAt(2), 10);
-                pointsY.put("p-"+line3.charAt(2), 10);
+                pointsExisting.put("p-"+line3.charAt(2), "p-"+line1.charAt(2));
+                realIndex.put("8", "p-"+line1.charAt(2));
+                pointsX.put("p-"+line3.charAt(2), 170);
+                pointsY.put("p-"+line3.charAt(2), 170);
             }
         }
 

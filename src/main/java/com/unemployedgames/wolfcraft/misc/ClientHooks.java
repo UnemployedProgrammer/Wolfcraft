@@ -8,6 +8,6 @@ import net.minecraft.core.BlockPos;
 public class ClientHooks {
     public static void openHomePageScreen() {
         //Minecraft.getInstance().setScreen(new CopyCatButtonConfigurationScreen(pos));
-        Minecraft.getInstance().setScreen(new ModMainScreen());
+        Minecraft.getInstance().setScreen(new IssuesAndSuggestionsScreen(true));
     }
 }
