@@ -1,0 +1,14 @@
+{
+  "type": "wolfcraft:needling",
+  "recipeLine1": "   ",
+  "recipeLine2": "34 ",
+  "recipeLine3": "12 ",
+  "ingredient": {
+    "item": "wolfcraft:wet_wolf_leather"
+  },
+  "inputCount": 4,
+  "output": {
+    "item": "wolfcraft:wet_wolf_armor_boots",
+    "count": 1
+  }
+}

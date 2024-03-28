@@ -20,7 +20,7 @@ public class RawNeedlingRecipe {
         this.outputCount = outputCount;
         this.recipeLine1 = recipeLine1;
         this.recipeLine2 = recipeLine2;
-        this.recipeLine2 = recipeLine3;
+        this.recipeLine3 = recipeLine3;
     }
 
     public boolean isInput(Item item) {

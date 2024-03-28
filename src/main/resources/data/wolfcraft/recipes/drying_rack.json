@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "WWW",
+    "   ",
+    "   "
+  ],
+  "key": {
+    "S": {
+      "tag": "minecraft:wooden_fences"
+    },
+    "W": {
+      "tag": "minecraft:logs"
+    }
+  },
+  "result": {
+    "item": "wolfcraft:drying_rack",
+    "count": 2
+  }
+}

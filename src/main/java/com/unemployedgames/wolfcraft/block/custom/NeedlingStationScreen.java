@@ -1,12 +1,15 @@
 package com.unemployedgames.wolfcraft.block.custom;
 
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.logging.LogUtils;
 import com.unemployedgames.wolfcraft.Wolfcraft;
 import com.unemployedgames.wolfcraft.item.ModItems;
 import com.unemployedgames.wolfcraft.misc.ModSounds;
 import com.unemployedgames.wolfcraft.misc.WolfMath;
+import com.unemployedgames.wolfcraft.recipe.NeedlingRecipeType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.screens.Screen;
@@ -25,11 +28,13 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.level.block.Blocks;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStationMenu> {
     private static final ResourceLocation INVENTORY =
@@ -45,6 +50,9 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
 
     private static final ResourceLocation ARROW =
             new ResourceLocation(Wolfcraft.MODID, "textures/gui/needling_station/arrow.png");
+
+    private static final ResourceLocation NEEDLING_POINT =
+            new ResourceLocation(Wolfcraft.MODID, "textures/gui/needling_station/point.png");
 
     private static final String STRING_LINE = "textures/gui/needling_station/line.png";
     private WolfMath.NeedlingPoints needlingPoints = new WolfMath.NeedlingPoints.Builder().firstRecipeLine(" ", " ", " ").midRecipeLine(" ", " ", " ").lastRecipeLine(" ", " ", " ").build();
@@ -85,12 +93,20 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         //INITLIST
         updateIndex();
 
-        recipes.add(new RawNeedlingRecipe(ModItems.WOLF_LEATHER_WET.get(), 8, ModItems.WET_WOLF_ARMOR_CHESTPLATE.get(), 1, "1 7", "286", "345"));
-        recipes.add(new RawNeedlingRecipe(ModItems.WOLF_LEATHER_WET.get(), 7, ModItems.WET_WOLF_ARMOR_LEGGINS.get(), 1, "345", "2 6", "1 7"));
-    }
-
-    private void setRecipePoints() {
-        needlingPoints = new WolfMath.NeedlingPoints.Builder().firstRecipeLine(recipeCurrent.getRecipeLine1()).midRecipeLine(recipeCurrent.getRecipeLine2()).lastRecipeLine(recipeCurrent.getRecipeLine3()).build();
+        //recipes.add(new RawNeedlingRecipe(ModItems.WOLF_LEATHER_WET.get(), 8, ModItems.WET_WOLF_ARMOR_CHESTPLATE.get(), 1, "1 7", "286", "345"));
+        //recipes.add(new RawNeedlingRecipe(ModItems.WOLF_LEATHER_WET.get(), 7, ModItems.WET_WOLF_ARMOR_LEGGINS.get(), 1, "345", "2 6", "1 7"));
+        try {
+            List<NeedlingRecipeType> crecipes = minecraft.level.getRecipeManager().getAllRecipesFor(NeedlingRecipeType.Type.INSTANCE);
+            LoggerFactory.getLogger(NeedlingStationBlock.class).info("Size of Recipes List: " + crecipes.size());
+            for (NeedlingRecipeType recipe : crecipes) {
+                recipes.add(new RawNeedlingRecipe(recipe.getInputItem().getItems()[0].getItem(), recipe.getInputItemCount(), recipe.getOutput().getItem(), recipe.getOutput().getCount(), recipe.getRecipeLine1(), recipe.getRecipeLine2(), recipe.getRecipeLine3()));
+            }
+        } catch (Exception e) {
+            LogUtils.getLogger().info(e.toString());
+            e.printStackTrace();
+            ToastComponent toastcomponent = Minecraft.getInstance().getToasts();
+            SystemToast.addOrUpdate(toastcomponent, SystemToast.SystemToastIds.PERIODIC_NOTIFICATION, Component.literal("Failed to Fetch Recipes, view logs for more info!"), (Component)null);
+        }
     }
 
     public void onRecipeItemChange(ItemStack currentItem) {
@@ -101,10 +117,12 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         if(previousRecipeInputItem != menu.inputSlot.getItem()) {
             onRecipeItemChange(menu.inputSlot.getItem());
             previousRecipeInputItem = menu.inputSlot.getItem();
+            LogUtils.getLogger().info("Just changed the Needling Recipe, throwing off all voids!");
         }
     }
 
     private void writeRecipesForItemList(Item slotInputItem) {
+        LogUtils.getLogger().info("Rewrote Needling Recipes for " + slotInputItem.getDescriptionId());
         if(recipes.isEmpty()) return;
         recipeListForItem.clear();
         for (RawNeedlingRecipe recipe : recipes) {
@@ -122,9 +140,9 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
             if(recipe.isOutput(recipeItem.getItem())) {
                 recipeCurrent = recipe;
                 needlingPoints = new WolfMath.NeedlingPoints.Builder().firstRecipeLine(recipe.getRecipeLine1()).midRecipeLine(recipe.getRecipeLine2()).lastRecipeLine(recipe.getRecipeLine3()).build();
+                LogUtils.getLogger().info("Setting the Needling Points, here there are: \n " + recipeCurrent.getRecipeLine1() + "\n" + recipeCurrent.getRecipeLine2() + "\n" + recipeCurrent.getRecipeLine3());
             }
         }
-        setRecipePoints();
     }
 
     @Override
@@ -188,11 +206,12 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
     public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
         renderBackground(guiGraphics);
         super.render(guiGraphics, mouseX, mouseY, delta);
-        renderTooltip(guiGraphics, mouseX, mouseY);
         renderNeedle(mouseX, mouseY, guiGraphics);
         renderOptions(guiGraphics, mouseX, mouseY, delta);
         renderRecipeTooltip(mouseX, mouseY, guiGraphics);
         renderNeedlingLines(mouseX, mouseY, guiGraphics);
+        renderPoints(guiGraphics);
+        renderTooltip(guiGraphics, mouseX, mouseY);
     }
 
     private void renderOptions(GuiGraphics guiGraphics, int mouseX, int mouseY, float delta) {
@@ -240,76 +259,112 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
         int needlingFieldYMax = height / 2 + 100;
         if (WolfMath.isBetween(mX, needlingFieldXMin, needlingFieldXMax) && WolfMath.isBetween(mY, needlingFieldYMin, needlingFieldYMax)) {
             for (NeedlingStationRaycast.Point renderPoint : NeedlingStationRaycast.performRaycast(lastRecipePointX, lastRecipePointY, mX, mY)) {
-                gg.fill(renderPoint.getX(), renderPoint.getY(), renderPoint.getX() + 1, renderPoint.getY() + 1, -1);
+                gg.fill(renderPoint.getX(), renderPoint.getY(), renderPoint.getX() + 2, renderPoint.getY() + 2, -1);
             }
         }
     }
 
     public void renderPoints(GuiGraphics gg) {
+        if(recipeListForItem.isEmpty() || recipeItem.is(Items.BARRIER) || needlingPoints == null) return;
+        //TODO: all Dosnt Work, Change!!!
+        needlingPointsSplit.clear();
+        //INDS
+        int r0 = needlingPoints.getFakeIndex(0);
+        int r1 = needlingPoints.getFakeIndex(1);
+        int r2 = needlingPoints.getFakeIndex(2);
+        int r3 = needlingPoints.getFakeIndex(3);
+        int r4 = needlingPoints.getFakeIndex(4);
+        int r5 = needlingPoints.getFakeIndex(5);
+        int r6 = needlingPoints.getFakeIndex(6);
+        int r7 = needlingPoints.getFakeIndex(7);
+        int r8 = needlingPoints.getFakeIndex(8);
         //Line 1
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(0))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(0)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(0)),
-                    needlingPoints.getFakeIndex(0),
-                    pButton -> needlePointPressed(0, needlingPoints.getFakeIndex(0)))));
+        if(needlingPoints.isPointThere(r0)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r0),
+                    needlingPoints.getPointY(r0),
+                    1, r0
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(1))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(1)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(1)),
-                    needlingPoints.getFakeIndex(1),
-                    pButton -> needlePointPressed(1, needlingPoints.getFakeIndex(1)))));
+        if(needlingPoints.isPointThere(r1)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r1),
+                    needlingPoints.getPointY(r1),
+                    1, r1
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(2))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(2)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(2)),
-                    needlingPoints.getFakeIndex(2),
-                    pButton -> needlePointPressed(2, needlingPoints.getFakeIndex(2)))));
-        }
-        // Line 2
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(3))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(3)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(3)),
-                    needlingPoints.getFakeIndex(3),
-                    pButton -> needlePointPressed(3, needlingPoints.getFakeIndex(3)))));
+        if(needlingPoints.isPointThere(r2)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r2),
+                    needlingPoints.getPointY(r2),
+                    1, r2
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(4))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(4)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(4)),
-                    needlingPoints.getFakeIndex(4),
-                    pButton -> needlePointPressed(4, needlingPoints.getFakeIndex(4)))));
+        if(needlingPoints.isPointThere(r3)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r3),
+                    needlingPoints.getPointY(r3),
+                    1, r3
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(5))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(5)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(5)),
-                    needlingPoints.getFakeIndex(5),
-                    pButton -> needlePointPressed(5, needlingPoints.getFakeIndex(5)))));
-        }
-        // Line 3
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(6))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(6)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(6)),
-                    needlingPoints.getFakeIndex(6),
-                    pButton -> needlePointPressed(6, needlingPoints.getFakeIndex(6)))));
+        if(needlingPoints.isPointThere(r4)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r4),
+                    needlingPoints.getPointY(r4),
+                    1, r4
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(7))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(7)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(7)),
-                    needlingPoints.getFakeIndex(7),
-                    pButton -> needlePointPressed(7, needlingPoints.getFakeIndex(7)))));
+        if(needlingPoints.isPointThere(r5)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r5),
+                    needlingPoints.getPointY(r5),
+                    1, r5
+            ));
         }
 
-        if(needlingPoints.isPointThere(needlingPoints.getFakeIndex(8))) {
-            needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(8)),
-                    needlingPoints.getPointY(needlingPoints.getFakeIndex(8)),
-                    needlingPoints.getFakeIndex(8),
-                    pButton -> needlePointPressed(8, needlingPoints.getFakeIndex(8)))));
+        if(needlingPoints.isPointThere(r6)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r6),
+                    needlingPoints.getPointY(r6),
+                    1, r6
+            ));
         }
+
+        if(needlingPoints.isPointThere(r7)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r7),
+                    needlingPoints.getPointY(r7),
+                    1, r7
+            ));
+        }
+
+        if(needlingPoints.isPointThere(r8)) {
+            needlingPointsSplit.add(new NeedlingPoint(
+                    needlingPoints.getPointX(r8),
+                    needlingPoints.getPointY(r8),
+                    1, r8
+            ));
+        }
+
+        // FINALLY, RENDER! (AND ADD BOUNDING BOXES :( )
+        int fieldOffsetX = 20;
+        int fieldOffsetY = (height - 200) / 2;
+        for (NeedlingPoint needlingPoint : needlingPointsSplit) {
+            gg.blit(NEEDLING_POINT, fieldOffsetX + needlingPoint.x(), fieldOffsetY + needlingPoint.y(), 0,0,20,20,10,10);
+            System.out.println(needlingPointsSplit);
+        }
+
     }
+    //OLD WRONG CODE KEPT FOR MAYBE FUTURE USES:
+    //needlingPointsSplit.add(addRenderableWidget(new NeedlingPoint(needlingPoints.getPointX(needlingPoints.getFakeIndex(0)),
+    //        needlingPoints.getPointY(needlingPoints.getFakeIndex(0)),
+    //        needlingPoints.getFakeIndex(0),
+    //        pButton -> needlePointPressed(0, needlingPoints.getFakeIndex(0)))));
 
     public void needlePointPressed(int needlePointRealIndex, int needlePointFakeIndex) {
 
@@ -340,8 +395,14 @@ public class NeedlingStationScreen extends AbstractContainerScreen<NeedlingStati
     }
 
     @Override
+    public boolean mouseClicked(double pMouseX, double pMouseY, int pButton) {
+
+
+        return super.mouseClicked(pMouseX, pMouseY, pButton);
+    }
+
+    @Override
     public boolean mouseScrolled(double pMouseX, double pMouseY, double pDelta) {
-        System.out.println(pDelta);
         if(recipeListForItem.size() != 0 && shouldScroll(((int)pMouseX), ((int)pMouseY))) {
             recipeInd = (int) (recipeInd + pDelta);
             if(recipeInd <= 0) {

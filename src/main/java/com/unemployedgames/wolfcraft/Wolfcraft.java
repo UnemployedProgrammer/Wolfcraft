@@ -10,7 +10,12 @@ import com.unemployedgames.wolfcraft.item.AllBlocksAndItems;
 import com.unemployedgames.wolfcraft.item.ModCreativeTabs;
 import com.unemployedgames.wolfcraft.item.ModItems;
 import com.unemployedgames.wolfcraft.misc.ModSounds;
+import com.unemployedgames.wolfcraft.recipe.ModRecipes;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.world.flag.FeatureFlagRegistry;
+import net.minecraft.world.flag.FeatureFlagUniverse;
+import net.minecraft.world.flag.FeatureFlags;
+import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
@@ -54,6 +59,7 @@ public class Wolfcraft
         ModMenuTypes.register(modEventBus);
         ModCreativeTabs.register(modEventBus);
         ModSounds.register(modEventBus);
+        ModRecipes.register(modEventBus);
 
         // Register ourselves for server and other game events we are interested in
         MinecraftForge.EVENT_BUS.register(this);
@@ -92,5 +98,12 @@ public class Wolfcraft
         {
             MenuScreens.register(ModMenuTypes.NEEDLING_STATION_MENU.get(), NeedlingStationScreen::new);
         }
+    }
+
+    private void justAUselessTest() {
+        //Not executed and only for Figuring Out!!!
+        //Reempty after brainstorming
+
+
     }
 }

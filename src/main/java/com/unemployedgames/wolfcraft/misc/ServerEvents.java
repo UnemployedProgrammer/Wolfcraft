@@ -17,6 +17,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
@@ -56,5 +57,10 @@ public class ServerEvents {
             }
             e.getLevel().destroyBlock(e.getPos(), true);
         }
+    }
+
+    @SubscribeEvent
+    public static void onPlayerJoinServer(PlayerEvent.PlayerLoggedInEvent event) {
+
     }
 }

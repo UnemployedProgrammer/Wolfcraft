@@ -1,11 +1,18 @@
 package com.unemployedgames.wolfcraft.modmainmenu;
 
+import com.unemployedgames.wolfcraft.misc.ModSounds;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.client.resources.sounds.SoundInstance;
+import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraftforge.client.event.sound.SoundEvent;
 
 public class IssuesAndSuggestionsScreen extends Screen {
 
@@ -66,6 +73,7 @@ public class IssuesAndSuggestionsScreen extends Screen {
 
             sendSuggButton = addRenderableWidget(Button.builder(Component.translatable("gui.wolfcraft.issues_and_suggestions.suggestion.send"), (press) -> {sendSuggestionData();}).bounds(width / 2 - ((width - 30) / 2), height / 2 + 50, width - 45, 20).build());
         }
+        playBackgroundMusic();
     }
 
     private void sendIssueData() {
@@ -87,5 +95,10 @@ public class IssuesAndSuggestionsScreen extends Screen {
         if(good) {
             this.minecraft.popGuiLayer();
         }
+    }
+
+    private void playBackgroundMusic() {
+        SoundManager manager = Minecraft.getInstance().getSoundManager();
+        //manager.play(SimpleSoundInstance.forUI(ModSounds.HAL4_MUSIC.get(), 1.0F));
     }
 }
