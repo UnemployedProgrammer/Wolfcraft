@@ -7,7 +7,9 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.StringUtils;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class WolfMath {
     public static final int TICKS_PER_SECOND = 20;
@@ -45,6 +47,17 @@ public class WolfMath {
             // Standard check for positive or mixed ranges
             return number >= min && number <= max;
         }
+    }
+
+    public static List<Component> splitComponent(Component split, String splitChars) {
+        String[] splitted = split.getString().split(splitChars);
+        List<Component> out = new ArrayList<>();
+
+        for (String s : splitted) {
+            out.add(Component.literal(s));
+            //System.out.println(s);
+        }
+        return out;
     }
 
     public static Component cutComponent(Component componentToCut, int maxLength) {

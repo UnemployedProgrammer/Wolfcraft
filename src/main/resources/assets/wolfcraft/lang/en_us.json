@@ -1,4 +1,6 @@
 {
+  "core.wolfcraft.chat.prefix": "[WOLFCRAFT]",
+
   "creativetab.wolfcraft.main": "Wolfcraft",
   "item.wolfcraft.cappy": "Cappy",
   "block.wolfcraft.table": "Table",
@@ -12,6 +14,7 @@
   "item.wolfcraft.wet_wolf_armor_helmet": "Wet Wolf Helmet",
   "item.wolfcraft.wet_wolf_armor_chestplate": "Wet Wolf Chestplate",
   "item.wolfcraft.wet_wolf_armor_leggins": "Wet Wolf Leggins",
+  "item.wolfcraft.guide": "Wolfcraft: Beginner's Guide",
   "item.wolfcraft.wet_wolf_armor_boots": "Wet Wolf Boots",
   "block.wolfcraft.drying_rack": "Drying Rack",
   "gui.wolfcraft.needling_station.no_recipe_1": "No Recipes for",
@@ -33,11 +36,18 @@
   "gui.wolfcraft.issues_and_suggestions.suggestion.send.fail": "Something went wrong. Try again later. :(",
   "gui.wolfcraft.issues_and_suggestions.suggestion.send.long": "Your Message is too long to send. Try avoiding unuseful words.",
   "gui.wolfcraft.needling_station.failed_mouse_wheel_sound": "Failed to play 'MouseWheelSound' because: minecraft.level = null",
+  "gui.wolfcraft.guidebook.title": "Guide Book",
+  "gui.wolfcraft.closebtnwitharrow": "< Close",
+  "gui.wolfcraft.backbtnwitharrow": "< Back",
 
   "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/",
 
   "glasses.wolfcraft.information" : "Information: ",
   "glasses.wolfcraft.property.string.dry_in": "Dry In",
 
-  "sounds.wolfcraft.mose_wheel_scrolls": "Scrolling Mouse Wheel"
+  "sounds.wolfcraft.mose_wheel_scrolls": "Scrolling Mouse Wheel",
+
+  "guide.wolfcraft.gotchat": "Hello and Welcome back to your World! If you need any Help, just open your Guide!",
+  "guide.wolfcraft.gotchatnew": " Hello and Welcome to your new World! If you need any Help, just open your Guide that you just received.",
+  "guide.wolfcraft.name": "'s Guide Book"
 }

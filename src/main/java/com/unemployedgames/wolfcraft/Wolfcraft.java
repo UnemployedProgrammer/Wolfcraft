@@ -9,6 +9,7 @@ import com.unemployedgames.wolfcraft.block.entity.BlockEntitys;
 import com.unemployedgames.wolfcraft.item.AllBlocksAndItems;
 import com.unemployedgames.wolfcraft.item.ModCreativeTabs;
 import com.unemployedgames.wolfcraft.item.ModItems;
+import com.unemployedgames.wolfcraft.item.guidebook.AllGuideEntrys;
 import com.unemployedgames.wolfcraft.misc.ModSounds;
 import com.unemployedgames.wolfcraft.recipe.ModRecipes;
 import net.minecraft.client.gui.screens.MenuScreens;
@@ -97,6 +98,8 @@ public class Wolfcraft
         public static void onClientSetup(FMLClientSetupEvent event)
         {
             MenuScreens.register(ModMenuTypes.NEEDLING_STATION_MENU.get(), NeedlingStationScreen::new);
+
+            AllGuideEntrys.addAllEntries();
         }
     }
 

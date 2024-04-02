@@ -7,11 +7,17 @@ import com.unemployedgames.wolfcraft.block.entity.entities.table.TableBlock;
 import com.unemployedgames.wolfcraft.block.entity.entities.table.TableEntity;
 import com.unemployedgames.wolfcraft.block.entity.entities.table.TableEntityRenderer;
 import com.unemployedgames.wolfcraft.item.ModItems;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.toasts.SystemToast;
 import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.commands.DataPackCommand;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraftforge.api.distmarker.Dist;
@@ -61,6 +67,35 @@ public class ServerEvents {
 
     @SubscribeEvent
     public static void onPlayerJoinServer(PlayerEvent.PlayerLoggedInEvent event) {
+        //if(isBeginnersPackThere(event)) {
+        //            if(event.getEntity().getPersistentData().contains("got_wolfcraft_guide")) {
+        //                event.getEntity().sendSystemMessage(Component.translatable("core.wolfcraft.chat.prefix").withStyle(ChatFormatting.DARK_BLUE).append(Component.translatable("guide.wolfcraft.gotchat").withStyle(ChatFormatting.GREEN)));
+        //            } else {
+        //                event.getEntity().getPersistentData().putBoolean("got_wolfcraft_guide", true);
+        //                event.getEntity().getInventory().add(new ItemStack(ModItems.GUIDE_BOOK.get()).setHoverName(Component.literal(event.getEntity().getName().getString() + "").append(Component.translatable("guide.wolfcraft.name"))));
+        //                event.getEntity().sendSystemMessage(Component.translatable("core.wolfcraft.chat.prefix").withStyle(ChatFormatting.DARK_BLUE).append(Component.translatable("guide.wolfcraft.gotchatnew").withStyle(ChatFormatting.GREEN)));
+        //            }
+        //        }
+        //Player plr = event.getEntity();
+        //if(plr.getPersistentData().contains("wolfcraft_data")) {
+        //            //has wolfcraft data
+        //            // do somethin crazy
+        //        } else {
+        //            //create needed tags
+        //            CompoundTag tag = new CompoundTag();
+        //            tag.putBoolean("got_guide", goGuide(plr));
+        //            plr.getPersistentData().put("wolfcraft_data", tag);
+        //        }
 
+        if(!event.getEntity().getPersistentData().contains("wolfcraft_got_guide")) {
+            event.getEntity().getPersistentData().putBoolean("wolfcraft_got_guide", true);
+            goGuide(event);
+        }
+    }
+
+    public static boolean goGuide(PlayerEvent.PlayerLoggedInEvent event) {
+        event.getEntity().getInventory().add(new ItemStack(ModItems.GUIDE_BOOK.get()).setHoverName(Component.literal(event.getEntity().getDisplayName().getString()).append(Component.translatable("guide.wolfcraft.name"))));
+        event.getEntity().sendSystemMessage(Component.translatable("core.wolfcraft.chat.prefix").withStyle(ChatFormatting.DARK_BLUE).append(Component.translatable("guide.wolfcraft.gotchatnew").withStyle(ChatFormatting.GREEN)));
+        return true;
     }
 }

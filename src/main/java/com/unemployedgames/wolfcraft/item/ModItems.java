@@ -5,9 +5,11 @@ import com.unemployedgames.wolfcraft.item.armor.CappyHat;
 import com.unemployedgames.wolfcraft.item.armor.WetWolfArmor;
 import com.unemployedgames.wolfcraft.item.custom.GetAllItems;
 import com.unemployedgames.wolfcraft.item.custom.informationglasses.InformationGlasses;
+import com.unemployedgames.wolfcraft.item.guidebook.GuideBookItem;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -50,6 +52,10 @@ public class ModItems {
 
     public static final RegistryObject<WetWolfArmor> WET_WOLF_ARMOR_BOOTS = ITEMS.register("wet_wolf_armor_boots",
             () -> new WetWolfArmor(ArmorMaterials.LEATHER, ArmorItem.Type.BOOTS, new Item.Properties()));
+
+    public static final RegistryObject<GuideBookItem> GUIDE_BOOK = ITEMS.register("guide",
+            () -> new GuideBookItem()); // got_wolf_leather_wet
+
 
     public static void register(IEventBus eventBus) {
         ITEMS.register(eventBus);
