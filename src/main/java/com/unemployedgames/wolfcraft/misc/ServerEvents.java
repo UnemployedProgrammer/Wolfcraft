@@ -28,6 +28,7 @@ import net.minecraftforge.event.level.BlockEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import org.jetbrains.annotations.NotNull;
 
 @Mod.EventBusSubscriber(modid = Wolfcraft.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public class ServerEvents {
@@ -91,11 +92,20 @@ public class ServerEvents {
             event.getEntity().getPersistentData().putBoolean("wolfcraft_got_guide", true);
             goGuide(event);
         }
+
+        boolean pck = hasPack(event.getEntity());
+
+        System.out.println("Has Pack: ");
+        System.out.println(pck);
     }
 
     public static boolean goGuide(PlayerEvent.PlayerLoggedInEvent event) {
         event.getEntity().getInventory().add(new ItemStack(ModItems.GUIDE_BOOK.get()).setHoverName(Component.literal(event.getEntity().getDisplayName().getString()).append(Component.translatable("guide.wolfcraft.name"))));
         event.getEntity().sendSystemMessage(Component.translatable("core.wolfcraft.chat.prefix").withStyle(ChatFormatting.DARK_BLUE).append(Component.translatable("guide.wolfcraft.gotchatnew").withStyle(ChatFormatting.GREEN)));
         return true;
+    }
+
+    public static boolean hasPack(@NotNull Player player) {
+        return player.level().getServer().getPackRepository().getSelectedIds().contains("wolfcraft:beginners_guide");
     }
 }

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "wolfcraft:table"
+    },
+    "title": "Table!",
+    "description": "",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "craft": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wolfcraft:table"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

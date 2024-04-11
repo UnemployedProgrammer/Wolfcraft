@@ -7,6 +7,7 @@ import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.apache.commons.lang3.StringUtils;
 
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -62,6 +63,62 @@ public class WolfMath {
 
     public static Component cutComponent(Component componentToCut, int maxLength) {
         return Component.literal(StringUtils.abbreviate(componentToCut.getString(), "...", maxLength));
+    }
+
+    public static double calculatePercentageOfValue(double percentage, double baseValue) {
+        if (baseValue <= 0) {
+            throw new IllegalArgumentException("Base value must be greater than 0");
+        }
+        return (percentage / 100.0) * baseValue;
+    }
+
+    public static class AnimationBezier {
+        private Point2D.Float startPoint;
+        private Point2D.Float endPoint;
+        private float t; // Parameter for interpolation
+        private boolean lastFrameCalculated = false;
+        private Point2D.Float lastFramePoint;
+
+        public AnimationBezier(Point2D.Float startPoint, Point2D.Float endPoint) {
+            this.startPoint = startPoint;
+            this.endPoint = endPoint;
+            this.t = 0.0f; // Start at the beginning
+        }
+
+        public Point2D.Float getNextFramePoint() {
+            if (lastFrameCalculated) {
+                return lastFramePoint;
+            }
+
+            // Bezier interpolation formula with easing
+            float easedT = easeInOutQuad(t);
+
+            float x = (1 - easedT) * startPoint.x + easedT * endPoint.x;
+            float y = (1 - easedT) * startPoint.y + easedT * endPoint.y;
+
+            // Increment parameter for next frame
+            t += 0.01f; // Adjust the increment value as needed for smoother or faster animation
+
+            // Ensure parameter stays within bounds [0, 1]
+            t = Math.min(t, 1.0f);
+
+            // Check if it's the last frame
+            if (t >= 1.0f) {
+                lastFrameCalculated = true;
+                lastFramePoint = new Point2D.Float(endPoint.x, endPoint.y);
+            }
+
+            return new Point2D.Float(x, y);
+        }
+
+        // Easing function for smooth animation
+        private float easeInOutQuad(float t) {
+            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+        }
+
+        public boolean isLastFriendDone() {
+            return lastFrameCalculated;
+        }
     }
 
     public static class NeedlingPoints {

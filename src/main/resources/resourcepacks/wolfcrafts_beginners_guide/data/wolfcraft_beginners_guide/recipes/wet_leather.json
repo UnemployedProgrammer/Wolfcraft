@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "C C",
+    "GWG",
+    "I I"
+  ],
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    },
+    "W": {
+      "item": "wolfcraft:dry_wolf_leather"
+    }
+  },
+  "result": {
+    "item": "minecraft:stone"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": {
+      "item": "wolfcraft:dry_wolf_leather"
+    },
+    "title": "Dry Wolf Leather!",
+    "description": "",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "craft": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wolfcraft:dry_wolf_leather"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}

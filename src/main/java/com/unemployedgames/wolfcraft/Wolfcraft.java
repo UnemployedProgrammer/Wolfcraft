@@ -12,17 +12,26 @@ import com.unemployedgames.wolfcraft.item.ModItems;
 import com.unemployedgames.wolfcraft.item.guidebook.AllGuideEntrys;
 import com.unemployedgames.wolfcraft.misc.ModSounds;
 import com.unemployedgames.wolfcraft.recipe.ModRecipes;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.gui.screens.MenuScreens;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.PathPackResources;
+import net.minecraft.server.packs.metadata.pack.PackMetadataSection;
+import net.minecraft.server.packs.repository.Pack;
+import net.minecraft.server.packs.repository.PackSource;
 import net.minecraft.world.flag.FeatureFlagRegistry;
 import net.minecraft.world.flag.FeatureFlagUniverse;
 import net.minecraft.world.flag.FeatureFlags;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddPackFindersEvent;
 import net.minecraftforge.event.BuildCreativeModeTabContentsEvent;
 import net.minecraftforge.event.server.ServerStartingEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.config.ModConfig;
@@ -30,6 +39,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
+
+import java.nio.file.Path;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(Wolfcraft.MODID)
@@ -70,6 +81,7 @@ public class Wolfcraft
 
         // Register our mod's ForgeConfigSpec so that Forge can create and load the config file for us
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, Config.SPEC);
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::registerDatapack);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
@@ -109,4 +121,23 @@ public class Wolfcraft
 
 
     }
+
+    public void registerDatapack(final AddPackFindersEvent event) {
+        if (event.getPackType() == PackType.SERVER_DATA) {
+            Path path = ModList.get().getModFileById("wolfcraft").getFile().findResource("resourcepacks/wolfcrafts_beginners_guide");
+            Pack builtinDataPack = Pack.readMetaAndCreate(
+                    "wolfcraft:beginners_guide",
+                    Component.translatable("wolfcraft.pack_beginner"),
+                    false,
+                    (a) -> new PathPackResources(a, path, false),
+                    PackType.SERVER_DATA,
+                    Pack.Position.TOP,
+                    PackSource.create((arg) -> Component.translatable("pack.nameAndSource", arg, Component.translatable("pack.source.builtin")).withStyle(ChatFormatting.GRAY), false)
+            );
+
+            event.addRepositorySource((packConsumer) -> packConsumer.accept(builtinDataPack));
+        }
+
+    }
+
 }

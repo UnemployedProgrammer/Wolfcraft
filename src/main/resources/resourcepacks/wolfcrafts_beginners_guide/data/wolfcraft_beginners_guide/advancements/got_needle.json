@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": {
+      "item": "wolfcraft:wet_wolf_armor_chestplate"
+    },
+    "title": "Wet Wolf Armor!",
+    "description": "",
+    "frame": "goal",
+    "show_toast": true,
+    "announce_to_chat": true
+  },
+  "criteria": {
+    "craft": {
+      "trigger": "minecraft:inventory_changed",
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "wolfcraft:wet_wolf_armor_chestplate",
+              "wolfcraft:wet_wolf_armor_leggins",
+              "wolfcraft:wet_wolf_armor_boots",
+              "wolfcraft:wet_wolf_armor_helmet"
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
