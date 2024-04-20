@@ -1,11 +1,14 @@
 package com.unemployedgames.wolfcraft.render.ui.debugthings;
 
+import com.unemployedgames.wolfcraft.modmainmenu.IssuesAndSuggestionsScreen;
 import com.unemployedgames.wolfcraft.render.ui.Icons;
 import com.unemployedgames.wolfcraft.render.ui.components.SmoothProgessBar;
 import com.unemployedgames.wolfcraft.render.ui.components.fancyconfigs.UnemployedButton;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.SplashRenderer;
+import net.minecraft.client.gui.screens.AlertScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraftforge.api.distmarker.Dist;
@@ -27,6 +30,15 @@ public class DebugScreen extends Screen {
     protected void init() {
         super.init();
 
+        if (true) { //this.minecraft == null
+            Minecraft.getInstance().setScreen(new AlertScreen(new Runnable() {
+                @Override
+                public void run() {
+                    Minecraft.getInstance().setScreen(new IssuesAndSuggestionsScreen(true));
+                }
+            }, Component.literal("Minecraft is null"), Component.literal("java.lang.NullPointerException: Cannot read field \"level\" because \"this.minecraft\" is null" +
+                    "at net.minecraft.client.gui.screens.Screen.renderBackground(Screen.java:359) ~[forge-1.20.1-47.2.19_mapped_parchment_2023.06.26-1.20.1-recomp.jar:?] {re:classloading,pl:accesstransformer:B,pl:runtimedistcleaner:A}...  ~ 10 more lines..")));
+        }
 
 
         //pB = addRenderableWidget(new SmoothProgessBar(10, 10, 500, 20, Component.literal("Bar")));

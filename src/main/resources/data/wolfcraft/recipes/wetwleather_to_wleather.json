@@ -1,0 +1,11 @@
+{
+  "type": "wolfcraft:drying",
+  "id": "wolfleather",
+  "ingredient": {
+    "item": "wolfcraft:wet_wolf_leather"
+  },
+  "result": {
+    "item": "wolfcraft:dry_wolf_leather",
+    "count": 1
+  }
+}

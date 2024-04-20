@@ -19,6 +19,6 @@ public class ClientHooks {
         //Minecraft.getInstance().setScreen(new GuideBookScreen(false, null));
 
         //DEBUG!!!
-        Minecraft.getInstance().setScreen(new DebugScreen());
+        Minecraft.getInstance().setScreen(new GuideBookScreen(false, null));
     }
 }

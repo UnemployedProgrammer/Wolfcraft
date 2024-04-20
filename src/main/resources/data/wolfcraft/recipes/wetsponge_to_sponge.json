@@ -1,0 +1,11 @@
+{
+  "type": "wolfcraft:drying",
+  "id": "sponge",
+  "ingredient": {
+    "item": "minecraft:wet_sponge"
+  },
+  "result": {
+    "item": "minecraft:sponge",
+    "count": 1
+  }
+}

@@ -1,10 +1,16 @@
 package com.unemployedgames.wolfcraft.block.entity.entities.drying_rack;
 
+import com.unemployedgames.wolfcraft.block.custom.NeedlingStationBlock;
 import com.unemployedgames.wolfcraft.item.ModItems;
+import com.unemployedgames.wolfcraft.recipe.DryingRecipeType;
+import com.unemployedgames.wolfcraft.recipe.NeedlingRecipeType;
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
+import java.util.List;
 
 public class ItemsThatCanDry {
     private static HashMap<String, Item> itemsWet = new HashMap<>();
@@ -30,6 +36,19 @@ public class ItemsThatCanDry {
                 return s;
         }
         return "";
+    }
+
+    public static int addItemsFromRecipe() {
+        List<DryingRecipeType> recipes = Minecraft.getInstance().level.getRecipeManager().getAllRecipesFor(DryingRecipeType.Type.INSTANCE);
+        for (DryingRecipeType recipe : recipes) {
+            addItem(recipe.getInputItem().getItems()[0].getItem(), recipe.getOutput().getItem(), recipe.getRID());
+        }
+        return recipes.size();
+    }
+
+    public static void clearRecipes() {
+        itemsDry.clear();
+        itemsWet.clear();
     }
 
     public static String getKeyFromDryItem(Item dryItem) {

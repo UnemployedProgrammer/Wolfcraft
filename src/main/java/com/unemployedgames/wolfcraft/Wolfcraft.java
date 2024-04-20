@@ -51,6 +51,7 @@ public class Wolfcraft
     public static final String MINECRAFT_VERSION = "1.20.1";
     public static final String MOD_VERSION = "1.0.0";
     public static final String GeckoLibNeededVersionURLModrinth = "https://modrinth.com/mod/geckolib/version/pyB0jIsx";
+    public static final String DataAPIUrl = "https://2504a1a0-e9ff-4df6-9fcf-e775306018d2-00-1qwrruca359zg.janeway.replit.dev/"; // ONLY TEST
 
     public static final boolean GLWarnMSG = false;
     // Directly reference a slf4j logger

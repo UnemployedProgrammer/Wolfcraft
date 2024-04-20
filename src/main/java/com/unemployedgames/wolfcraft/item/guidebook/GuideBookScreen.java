@@ -9,6 +9,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.Music;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
@@ -39,6 +40,15 @@ public class GuideBookScreen extends Screen {
 
     @Override
     public void init() {
+        super.init();
+
+        if (this.minecraft == null) {
+            System.out.println("Minecraft instance is null in init()");
+            return;
+        } //else System.out.println("Notnull minecraft instance in screen config copycat button");
+        Level level = this.minecraft.level;
+        if (level == null) return;
+
         xBcOffset = width / 2 - 136;
         yBcOffset = height / 2 - 90;
         //allButtons.add(addRenderableWidget(new GuideBookPageButton(xBcOffset + 20, yBcOffset + 20, new GuideBookEntry(Component.literal("hi, this is a title test, how long can it be? This long? I don't think so?"), Component.literal("content"), new ResourceLocation(Wolfcraft.MODID, "textures/gui/wolfcraft_title.png")), minecraft)));
@@ -53,8 +63,6 @@ public class GuideBookScreen extends Screen {
                 GuideBookScreen.this.minecraft.popGuiLayer();
             }
         })).bounds(5, 5, 150, 20).build());
-
-        super.init();
     }
 
     public void renderSite1() {

@@ -25,7 +25,7 @@ public class UnemployedButton extends AbstractButton {
 
     public float translateBy = 0f;
     public float direction = 1f;
-    public float directionCounter = 1f;
+    public int directionCounter = 1;
 
     public UnemployedButton(int pX, int pY, int pWidth, int pHeight, Component pMessage, Icons icon, OnPress press) {
         super(pX, pY, pWidth, pHeight, pMessage);
@@ -46,12 +46,25 @@ public class UnemployedButton extends AbstractButton {
         //pGuiGraphics.pose().mulPose(Axis.ZP.rotationDegrees(deg));
         pGuiGraphics.pose().translate(0f, translateBy, 0f);
 
-        if (isHoveredOrFocused()) {
+        if (this.isHovered()) {
+            directionCounter++;
+            translateBy = translateBy + (direction * 0.06f);
 
+            if(directionCounter == 80) {
+                direction = -1f;
+            }
+            if(directionCounter == 160) {
+                direction = 1f;
+                directionCounter = 0;
+            }
+        } else {
+            direction = 1f;
+            directionCounter = 0;
+            translateBy = 0f;
         }
 
-        pGuiGraphics.blit(new ResourceLocation(Wolfcraft.MODID, BACKGROUND_BUTTON_SMALL), getX(), getY(),0,0,width,width,16,16);
-        pGuiGraphics.blit(icon.getIcon(), 3 + getX(),3 + getY(),0,0, width - 6, width - 6, 10,10);
+        pGuiGraphics.blit(new ResourceLocation(Wolfcraft.MODID, BACKGROUND_BUTTON_SMALL), getX(), getY(),0,0,16,16,16,16);
+        pGuiGraphics.blit(icon.getIcon(), 3 + getX(),3 + getY(),0,0, 10, 10, 20,20);
         pGuiGraphics.pose().popPose();
         //super.renderWidget(pGuiGraphics, pMouseX, pMouseY, pPartialTick); WOULD RENDER A BUTTON
     }
