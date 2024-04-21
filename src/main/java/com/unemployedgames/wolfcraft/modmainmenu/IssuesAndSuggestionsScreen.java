@@ -1,11 +1,14 @@
 package com.unemployedgames.wolfcraft.modmainmenu;
 
+import com.unemployedgames.wolfcraft.misc.ApiRequests;
 import com.unemployedgames.wolfcraft.misc.ModSounds;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.Checkbox;
 import net.minecraft.client.gui.components.EditBox;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.client.resources.sounds.SoundInstance;
@@ -77,6 +80,15 @@ public class IssuesAndSuggestionsScreen extends Screen {
     }
 
     private void sendIssueData() {
+
+        ApiRequests.PlayerBan pBan = ApiRequests.getBan(Minecraft.getInstance().getUser().getName());
+        if (pBan == null) return;
+        if(pBan.banned) {
+            ToastComponent toastcomponent = Minecraft.getInstance().getToasts();
+            SystemToast.addOrUpdate(toastcomponent, SystemToast.SystemToastIds.PERIODIC_NOTIFICATION, Component.translatable("ban.wolfcraft.cannotsend"), (Component)null);
+            return;
+        }
+
         TelemetryDataCollector col = new TelemetryDataCollector();
         col.collectStandardData();
         if(IssuesAndSuggestionsScreen.this.issuesSendTeleMax.selected()) {
@@ -90,6 +102,15 @@ public class IssuesAndSuggestionsScreen extends Screen {
     }
 
     private void sendSuggestionData() {
+
+        ApiRequests.PlayerBan pBan = ApiRequests.getBan(Minecraft.getInstance().getUser().getName());
+        if (pBan == null) return;
+        if(pBan.banned) {
+            ToastComponent toastcomponent = Minecraft.getInstance().getToasts();
+            SystemToast.addOrUpdate(toastcomponent, SystemToast.SystemToastIds.PERIODIC_NOTIFICATION, Component.translatable("ban.wolfcraft.cannotsend"), (Component)null);
+            return;
+        }
+
         boolean good = SendSomethingToDiscord.sendToDiscordAsSuggestionAndCheckIfWentGood(this.minecraft.getUser().getName() + ": " + IssuesAndSuggestionsScreen.this.suggestionBox.getValue());
 
         if(good) {

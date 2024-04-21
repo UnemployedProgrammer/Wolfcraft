@@ -1,5 +1,7 @@
 {
   "core.wolfcraft.chat.prefix": "[WOLFCRAFT]",
+  "core.wolfcraft.api.unavailable": "API Services Unavailable",
+  "core.wolfcraft.api.reconnect": "Contacting servers...",
   "wolfcraft.pack_beginner": "Wolfcraft: Beginner's Guide",
 
   "creativetab.wolfcraft.main": "Wolfcraft",
@@ -40,6 +42,12 @@
   "gui.wolfcraft.guidebook.title": "Guide Book",
   "gui.wolfcraft.closebtnwitharrow": "< Close",
   "gui.wolfcraft.backbtnwitharrow": "< Back",
+  "ban.wolfcraft.reason": "Reason",
+  "ban.wolfcraft.title": "Wolfcraft - You are Banned",
+  "ban.wolfcraft.bye": "Wolfcraft - You are Unbanned!",
+  "ban.wolfcraft.cannotsend": "You can't submit anything because you're banned!",
+  "ban.wolfcraft.thatyoucannotdo": "Bug reports and suggestions are no longer accepted due to the ban.-nl-To contest your ban, please join our Discord server,-nl-accessible via the in-game homepage. Upon ban removal,-nl-you'll receive an in-game notification upon launching-nl-the game. Failure to appeal means a permanent ban;-nl-it won't be automatically lifted.",
+  "ban.wolfcraft.sound": "Sound",
 
   "ui.geckolibnotloaded.text": "GeckoLib is not Loaded, please install GeckoLib on https://modrinth.com/mod/geckolib/",
 

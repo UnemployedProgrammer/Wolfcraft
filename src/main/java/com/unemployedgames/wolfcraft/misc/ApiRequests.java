@@ -1,20 +1,20 @@
 package com.unemployedgames.wolfcraft.misc;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.google.gson.annotations.SerializedName;
 import com.unemployedgames.wolfcraft.Wolfcraft;
-
-import javax.annotation.Nullable;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
+import net.minecraft.network.chat.Component;
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.Date;
+import java.util.concurrent.CompletableFuture;
 
-public class ApiRequests {
+public class  ApiRequests {
 
     public static class PlayerBan {
         public boolean banned;
@@ -48,7 +48,6 @@ public class ApiRequests {
 
                 json = new Gson().fromJson(res, PlayerBan.class);
             } else {
-                System.out.println("Error: HTTP request failed with code " + responseCode);
             }
 
             connection.disconnect();
@@ -56,5 +55,17 @@ public class ApiRequests {
             e.printStackTrace();
         }
         return json;
+    }
+
+    public static CompletableFuture<PlayerBan> getBanAsync(String username) {
+        return CompletableFuture.supplyAsync(() -> {
+            PlayerBan json = null;
+            try {
+                json = getBan(username); // Call the existing synchronous method
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return json;
+        });
     }
 }

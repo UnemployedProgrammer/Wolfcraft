@@ -1,18 +1,26 @@
 package com.unemployedgames.wolfcraft.modmainmenu;
 
 
+import com.google.gson.Gson;
+import com.mojang.logging.LogUtils;
+import com.unemployedgames.wolfcraft.Wolfcraft;
 import com.unemployedgames.wolfcraft.item.ModItems;
-import com.unemployedgames.wolfcraft.misc.ClientHooks;
-import com.unemployedgames.wolfcraft.misc.Components;
+import com.unemployedgames.wolfcraft.misc.*;
+import com.unemployedgames.wolfcraft.render.ui.screen.YouAreBannedScreen;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
+import net.minecraft.client.gui.components.toasts.SystemToast;
+import net.minecraft.client.gui.components.toasts.ToastComponent;
 import net.minecraft.client.gui.screens.PauseScreen;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.TitleScreen;
 import net.minecraft.client.resources.language.I18n;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,24 +29,49 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 import org.apache.commons.lang3.mutable.MutableObject;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 
 public class MainMenuButton extends Button {
     public static final ItemStack ICON = new ItemStack(ModItems.WOLF_LEATHER_DRY.get());
+    public boolean services = false;
 
     public MainMenuButton(int x, int y) {
         super(x, y, 20, 20, Components.immutableEmpty(), MainMenuButton::click, DEFAULT_NARRATION);
+        AreThereServices.areServicesThere();
     }
     @Override
     public void renderString(GuiGraphics pGuiGraphics, Font pFont, int pColor) {
-        pGuiGraphics.renderItem(ICON, getX() + 2, getY() + 2);
+        if (AreThereServices.CONNECTING) {
+            pGuiGraphics.blit(new ResourceLocation(Wolfcraft.MODID, "textures/gui/noconnection.png"), getX() + 2, getY() + 2, 0,0,16,16,16,16);
+            if(isHovered()) {
+                pGuiGraphics.renderTooltip(Minecraft.getInstance().font, List.of(Component.translatable("core.wolfcraft.api.reconnect")), Optional.empty(), getX() + 10, getY() + 10);
+            }
+        }
+
+        if(AreThereServices.SERVICES & !AreThereServices.CONNECTING) {
+            pGuiGraphics.renderItem(ICON, getX() + 2, getY() + 2);
+            if(isHovered()) {
+                pGuiGraphics.renderTooltip(Minecraft.getInstance().font, List.of(Component.translatable("creativetab.wolfcraft.main")), Optional.empty(), getX() + 10, getY() + 10);
+            }
+        } else if (!AreThereServices.SERVICES & !AreThereServices.CONNECTING) {
+            pGuiGraphics.blit(new ResourceLocation(Wolfcraft.MODID, "textures/gui/noconnection.png"), getX() + 2, getY() + 2, 0,0,16,16,16,16);
+            if(isHovered()) {
+                pGuiGraphics.renderTooltip(Minecraft.getInstance().font, List.of(Component.translatable("core.wolfcraft.api.unavailable")), Optional.empty(), getX() + 10, getY() + 10);
+            }
+        }
     }
 
     public static void click(Button b) {
-        ClientHooks.openHomePageScreen();
+        if (AreThereServices.SERVICES) ClientHooks.openHomePageScreen();
     }
 
     public static class SingleMenuRow {
